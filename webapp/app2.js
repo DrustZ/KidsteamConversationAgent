@@ -102,6 +102,7 @@ function playOutput(arrayBuffer, callback){
   }
 }
 
+
 document.addEventListener("DOMContentLoaded", function(event) {
 
   // test for relevant API-s
@@ -109,6 +110,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
   //   console.log('api ' + api + " and if browser has it: " + (api in window));
   // }
 
+  document.querySelector(".sign-in-or-out-link").addEventListener("click", handleAuthClick);
+  initClient()
+  
   displayCurrentTime();
 
   // check for Chrome
@@ -239,3 +243,57 @@ function speakResponses(responses, index) {
 
 
 });
+
+
+// Auth
+var GoogleAuth; // Google Auth object.
+var SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly'
+function initClient() {
+  gapi.load('client:auth2', function() {
+    gapi.client.init({
+        'apiKey': 'AIzaSyD7Zp3_FWdx3wF4BfV2DySb2ip9yeiXI2Q',
+        'clientId': '424897191860-1m709avq1lkkt65mrqf8kjrjsthplqgh.apps.googleusercontent.com',
+        'scope': SCOPE,
+    }).then(function () {
+        GoogleAuth = gapi.auth2.getAuthInstance();
+
+        // Listen for sign-in state changes.
+        GoogleAuth.isSignedIn.listen(updateSigninStatus);
+        // Handle initial sign-in state. (Determine if user is already signed in.)
+        var user = GoogleAuth.currentUser.get();
+        setSigninStatus();
+    });
+  });
+}
+
+function setSigninStatus(isSignedIn) {
+  var user = GoogleAuth.currentUser.get();
+  var isAuthorized = user.hasGrantedScopes(SCOPE);
+  if (isAuthorized) {
+    console.log("User signed in. Updating UI to reflect that");
+    var email = user.getBasicProfile().getEmail();
+
+    document.querySelector(".sign-in-or-out-label").innerHTML = 'Signed in as ' + email + ".";
+    document.querySelector(".sign-in-or-out-link").innerHTML = 'Sign out';
+    document.querySelector(".app-footer").classList.remove("not-signed-in");
+  } else {
+    console.log("User not signed in. Updating UI to reflect that.");
+    document.querySelector(".sign-in-or-out-label").innerHTML = 'Not signed in. You must sign in with Google to continue.';
+    document.querySelector(".sign-in-or-out-link").innerHTML = 'Sign in';
+    document.querySelector(".app-footer").classList.add("not-signed-in");
+  }
+}
+
+function updateSigninStatus(isSignedIn) {
+  setSigninStatus(isSignedIn);
+}
+
+function handleAuthClick() {
+  if (GoogleAuth.isSignedIn.get()) {
+    // User is authorized and has clicked 'Sign out' button.
+    GoogleAuth.signOut();
+  } else {
+    // User is not signed in. Start Google auth flow.
+    GoogleAuth.signIn();
+  }
+}
