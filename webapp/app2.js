@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   // Now we’ve established that the browser is Chrome with proper speech API-s.
 
   // Initial feedback message.
-  addBotItem("Hi, welcome back to our superhero vs. supervillain story. Are you ready to start a new adventure with our superhero Zip?");
+  addBotItem("Hi [1st Kid\'s name] and [2nd Kid\'s name], welcome back to our superhero vs. supervillain story. Are you ready to start a new adventure with our superhero Zip?");
 
   var sessionId = uuid();
 
