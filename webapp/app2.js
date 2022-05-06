@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     if (recognizing){
       recognition.stop()
       gotoReadyState()
-      //user hit button, time to send the utterance
+      //user hit button, time to send the utterance to server
       $.ajax({
         url: "http://localhost:8730",
         type: "get", //send it through get method
@@ -251,8 +251,8 @@ var SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly'
 function initClient() {
   gapi.load('client:auth2', function() {
     gapi.client.init({
-        'apiKey': 'AIzaSyD7Zp3_FWdx3wF4BfV2DySb2ip9yeiXI2Q',
-        'clientId': '424897191860-1m709avq1lkkt65mrqf8kjrjsthplqgh.apps.googleusercontent.com',
+        'apiKey': 'AIzaSyB6gsP6ICNn9jxWr2EQHsuld57Kp4sx-EY',
+        'clientId': '989747061845-0c2n6f7jasooe7ef23he6cdofhpmjeb7.apps.googleusercontent.com',
         'scope': SCOPE,
     }).then(function () {
         GoogleAuth = gapi.auth2.getAuthInstance();
