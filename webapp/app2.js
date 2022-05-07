@@ -248,10 +248,12 @@ function speakResponses(responses, index) {
 // Auth
 var GoogleAuth; // Google Auth object.
 var SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly'
+var key = config.LYNN_API_KEY;
+console.log(key)
 function initClient() {
   gapi.load('client:auth2', function() {
     gapi.client.init({
-        'apiKey': 'AIzaSyB6gsP6ICNn9jxWr2EQHsuld57Kp4sx-EY',
+        'apiKey': key,
         'clientId': '989747061845-0c2n6f7jasooe7ef23he6cdofhpmjeb7.apps.googleusercontent.com',
         'scope': SCOPE,
     }).then(function () {
