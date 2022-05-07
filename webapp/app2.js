@@ -249,7 +249,6 @@ function speakResponses(responses, index) {
 var GoogleAuth; // Google Auth object.
 var SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly'
 var key = config.LYNN_API_KEY;
-console.log(key)
 function initClient() {
   gapi.load('client:auth2', function() {
     gapi.client.init({
