@@ -1,5 +1,8 @@
+# ignore text to speech key
 gcloudkey.json
 
+# ignore pycache
 __pycache__
 
+# ignore api keys
 config.js

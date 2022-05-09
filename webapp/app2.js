@@ -226,7 +226,7 @@ function speakResponses(responses, index) {
     } else {
       setTimeout(function () {
         speakResponses(responses, index+1)
-      }, 2000);
+      }, 1500);
     }
   }
   var url = "data:audio/mp3;base64,"+responses['audio'][index]
@@ -248,7 +248,7 @@ function speakResponses(responses, index) {
 // Auth
 var GoogleAuth; // Google Auth object.
 var SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly'
-var key = config.LYNN_API_KEY;
+var key = config.API_KEY;
 function initClient() {
   gapi.load('client:auth2', function() {
     gapi.client.init({
