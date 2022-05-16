@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
 import OnboardingPage from './pages/OnboardingPage';
 import ReminderPage from './pages/ReminderPage';
 import PromptPage from './pages/PromptPage';
@@ -8,26 +7,34 @@ import FinishPage from './pages/FinishPage';
 
 
 function App() {
-  const [appState, setAppState] = useState("onboarding");
+  const [day, setDay] = useState(1);
+  const [appState, setAppState] = useState(<OnboardingPage />);
+  function handleNewState(state) {
+    switch (state) {
+      case "onbarding":
+        setAppState(<OnboardingPage />)
+        break;
+      case "reminder":
+        setAppState(<ReminderPage day={day}/>)
+        break;
+      case "prompt":
+        setAppState(<PromptPage />)
+        break;
+      case "interaction":
+        setAppState(<InteractionPage />)
+        break;
+      case "finish":
+        setAppState(<FinishPage />)
+        break;
+      default:
+        setAppState(<OnboardingPage />)
+    }
+    setAppState(state)
+  }
 
   return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<OnboardingPage />} />
-
-        <Route path="/reminder" element={<ReminderPage />} />
-        
-        <Route path="/prompt" element={<PromptPage />} />
-
-        <Route path="/interaction" element={<InteractionPage />} />
-
-        <Route path="/finish" element={<FinishPage />} />
-
-        <Route
-          path="*"
-          element={<Navigate to="/" replace />}
-        />
-      </Routes>
+    <div className="voiceapp">
+      {appState}
     </div>
   );
 }

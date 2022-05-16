@@ -27,3 +27,32 @@ h1 {
 .superhero-img {
   max-height: 150px;
 }
+
+/* Reminder Page Rules */
+.reminder {
+  text-align: center;
+}
+
+.diamond-day {
+  position: relative;
+  color: white;
+}
+
+.day-text {
+  color: #FA532E;
+  font-size: 32px;
+  font-weight: 700;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.diamond-list {
+  display: flex;
+  justify-content: center;
+}
+
+.diamond {
+  padding: 1rem 0.75rem
+}
