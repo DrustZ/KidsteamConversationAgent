@@ -7,8 +7,11 @@ import FinishPage from './pages/FinishPage';
 
 
 function App() {
+  // create states for current day and what the app state is
   const [day, setDay] = useState(1);
   const [appState, setAppState] = useState(<OnboardingPage />);
+
+  // callback function used to change state of app
   function handleNewState(state) {
     switch (state) {
       case "onbarding":
@@ -29,7 +32,6 @@ function App() {
       default:
         setAppState(<OnboardingPage />)
     }
-    setAppState(state)
   }
 
   return (

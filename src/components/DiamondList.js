@@ -1,6 +1,7 @@
 import React from 'react';
 
 export default function DiamondList(props) {
+  // create a list of diamonds and fill them in depending on day
   let diamonds = [...Array(5).keys()].map((num, index) => {
     console.log(props.day)
     let src = 'img/diamond-incomplete.png'

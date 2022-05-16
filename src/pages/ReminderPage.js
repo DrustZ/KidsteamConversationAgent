@@ -6,6 +6,7 @@ export default function ReminderPage(props) {
 
   return (
     <main className='reminder'>
+      {/* create diamond with day number in it */}
       <div className='diamond-day'>
         <img src='/img/diamond-day.png' alt='diamond showing the interaction day' />
         <div class='day-text'>{props.day}</div>
