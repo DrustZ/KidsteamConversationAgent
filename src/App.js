@@ -9,7 +9,7 @@ import FinishPage from './pages/FinishPage';
 function App() {
   // create states for current day and what the app state is
   const [day, setDay] = useState(1);
-  const [appState, setAppState] = useState(<OnboardingPage />);
+  const [appState, setAppState] = useState(<PromptPage />);
 
   // callback function used to change state of app
   function handleNewState(state) {
@@ -18,7 +18,7 @@ function App() {
         setAppState(<OnboardingPage />)
         break;
       case "reminder":
-        setAppState(<ReminderPage day={day}/>)
+        setAppState(<ReminderPage day={day} />)
         break;
       case "prompt":
         setAppState(<PromptPage />)
@@ -27,7 +27,7 @@ function App() {
         setAppState(<InteractionPage />)
         break;
       case "finish":
-        setAppState(<FinishPage />)
+        setAppState(<FinishPage day={day} />)
         break;
       default:
         setAppState(<OnboardingPage />)

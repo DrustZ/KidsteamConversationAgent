@@ -56,3 +56,21 @@ h1 {
 .diamond {
   padding: 1rem 0.75rem
 }
+
+/* Prompt Page Rules */
+.prompt {
+  text-align: center;
+}
+
+.mic-button {
+  position:absolute; 
+   margin-left:-75px;
+   left:50%;
+   width:150px;
+   bottom:60px;
+}
+
+/* Finish Page Rules */
+.finish {
+  text-align: center;
+}
