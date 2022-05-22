@@ -62,6 +62,23 @@ h1 {
   text-align: center;
 }
 
+.GloginContainer {
+  position: absolute;
+  right: 50px;
+  top: 50px;
+}
+
+.btn {
+  width: 120px;
+  height: 40px;
+  padding: 10px;
+  text-align: center;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: #f7981b;
+}
+
 /* Finish Page Rules */
 .finish {
   text-align: center;

@@ -5,20 +5,22 @@ import PromptPage from './pages/PromptPage';
 import InteractionPage from './pages/InteractionPage';
 import FinishPage from './pages/FinishPage';
 import Mic from './components/Mic';
+import { GoogleLogin } from './components/GoogleLogin';
 import { microphoneRecorder, socket, speakResponses } from './AudioService'
+
 var currentResponse = ''
 
 function App() {
   // create states for current day and what the app state is
   const [day, setDay] = useState(1);
-
+  const [userEmail, setUserEmail] = useState('')
   // ========== MIC status ================
   // whether the mic is listening
   const [miclistening, setMicListening] = useState(false);
   // whether the current recognition is finished
   const [recognizeFinished, setRecognizeFinished] = useState(true);
 
-  const [appState, setAppState] = useState(<PromptPage />);
+  const [appState, setAppState] = useState(<OnboardingPage />);
   var recodrder = new microphoneRecorder()
 
   // init data
@@ -32,6 +34,16 @@ function App() {
       speakResponses(responses, 0, startRecording)
     })
   }, []);
+
+  const userUpdated = (email) => {
+    setUserEmail(email)
+    if (email.lengh == 0) {
+      // log out
+      console.log('logged out')
+    } else {
+      console.log(`signed in as ${email}`)
+    }
+  }
 
   const handleSpeechData = (data) => {
     var dataFinal = undefined || data.results[0].isFinal;
@@ -50,7 +62,7 @@ function App() {
     currentResponse = ''
     switch (state) {
       case "onbarding":
-        setAppState(<OnboardingPage />)
+        setAppState(<OnboardingPage/>)
         break;
       case "reminder":
         setAppState(<ReminderPage day={day} />)
@@ -96,6 +108,7 @@ function App() {
 
   return (
     <div className="voiceapp">
+      <GoogleLogin userUpdated={userUpdated}/>
       {appState}
       <Mic isListening={miclistening} onMicClick={handleMicClick}/>
     </div>
