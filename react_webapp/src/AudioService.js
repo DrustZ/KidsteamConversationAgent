@@ -11,6 +11,63 @@ socket.on('connect', function (data) {
     socket.emit('join', 'Server Connected to Client');
 });
 
+
+//================= SPEECH CONFIG =================
+// Play given responses
+export var speakResponses = (responses, index, callback) => {
+    var stop_saying = false
+    if (index+1 >= responses.length) {
+      stop_saying = true
+    }
+  
+    function endOrCont(){
+      if (stop_saying){
+        callback();
+      } else {
+        setTimeout(function () {
+          speakResponses(responses, index+1)
+        }, 2000);
+      }
+    }
+
+    let blob = new Blob([responses[index]], { type: "audio/mp3" });
+    new Response(blob).arrayBuffer()
+          .then( abuf => {playOutput(abuf, endOrCont)});
+}
+
+// Play audio
+var outputSource = null;
+export var playOutput = (arrayBuffer, callback) => {
+  var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  if (outputSource !== null) {
+    outputSource.stop()
+  }
+  try {
+      if(arrayBuffer.byteLength > 0){
+          console.log(arrayBuffer.byteLength);
+          audioContext.decodeAudioData(arrayBuffer,
+          function(buffer){
+              audioContext.resume();
+              outputSource = audioContext.createBufferSource();
+              outputSource.connect(audioContext.destination);
+              outputSource.buffer = buffer;
+              outputSource.start(0);
+              outputSource.onended = function() {
+                if (callback) {
+                  callback()
+                }
+              }
+          },
+          function(){
+              console.log(arguments);
+          });
+      }
+  } catch(e) {
+      console.log(e);
+  }
+}
+
+
 //================= AUDIO CONFIG =================
 // Stream Audio
 let bufferSize = 2048,

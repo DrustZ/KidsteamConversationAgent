@@ -40,6 +40,13 @@
     stream-events "^1.0.4"
     uuid "^8.3.2"
 
+"@google-cloud/text-to-speech@^3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@google-cloud/text-to-speech/-/text-to-speech-3.4.0.tgz#96f9387dc59008a7791de8153dd979dfecc139d3"
+  integrity sha512-0N5QEZxTdv89lG5Dcd7VEaTkL7LuPXWlTf7fmar7reAhsUVh9PeqJJttCXxPaHQ1LY+czvxDzswysHvVdYxL+Q==
+  dependencies:
+    google-gax "^2.24.1"
+
 "@grpc/grpc-js@~1.6.0":
   version "1.6.7"
   resolved "https://registry.yarnpkg.com/@grpc/grpc-js/-/grpc-js-1.6.7.tgz#4c4fa998ff719fe859ac19fe977fdef097bb99aa"
@@ -634,7 +641,7 @@ google-auth-library@^7.14.0:
     jws "^4.0.0"
     lru-cache "^6.0.0"
 
-google-gax@^2.30.1:
+google-gax@^2.24.1, google-gax@^2.30.1:
   version "2.30.4"
   resolved "https://registry.yarnpkg.com/google-gax/-/google-gax-2.30.4.tgz#578b4461ed328446e2ebdaa1d7ae5e12aec839bd"
   integrity sha512-/W4wWKjYcCXtd3Vz+ux7fN3MElbLVKGmHCCgA6kotigQgoDrLLueSvnXsck7qZaF39ooYnFhA58Rjr7RHe2heA==

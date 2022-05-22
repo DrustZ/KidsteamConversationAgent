@@ -4,7 +4,7 @@
 //  Created by Vinzenz Aubry for sansho 24.01.17
 //  Feel free to improve!
 //	Contact: v@vinzenzaubry.com
-
+const util = require('util');
 const express = require('express'); // const bodyParser = require('body-parser'); // const path = require('path');
 const environmentVars = require('dotenv').config();
 const WavFileWriter = require('wav').FileWriter;
@@ -12,6 +12,10 @@ const WavFileWriter = require('wav').FileWriter;
 // Google Cloud
 const speech = require('@google-cloud/speech');
 const speechClient = new speech.SpeechClient(); // Creates a client
+
+// TTS
+const textToSpeech = require('@google-cloud/text-to-speech');
+const ttsclient = new textToSpeech.TextToSpeechClient();
 
 const app = express();
 const port = process.env.PORT || 1337;
@@ -32,6 +36,14 @@ io.on('connection', function (client) {
 
   client.on('messages', function (data) {
     client.emit('broad', data);
+  });
+
+  client.on('userResponse', function (data) {
+    console.log(data)
+    generateAudio('testing this').then(audio => {
+      console.log("return!")
+      client.emit('assistantResponse', [audio])
+    })
   });
 
   client.on('startGoogleCloudStream', function (data) {
@@ -68,11 +80,11 @@ io.on('connection', function (client) {
       .streamingRecognize(request)
       .on('error', console.error)
       .on('data', (data) => {
-        process.stdout.write(
-          data.results[0] && data.results[0].alternatives[0]
-            ? `Transcription: ${data.results[0].alternatives[0].transcript}\n`
-            : '\n\nReached transcription time limit, press Ctrl+C\n'
-        );
+        // process.stdout.write(
+        //   data.results[0] && data.results[0].alternatives[0]
+        //     ? `Transcription: ${data.results[0].alternatives[0].transcript}\n`
+        //     : '\n\nReached transcription time limit, press Ctrl+C\n'
+        // );
         client.emit('speechData', data);
 
         // if end of utterance, let's restart stream
@@ -93,7 +105,25 @@ io.on('connection', function (client) {
   }
 });
 
-// =========================== GOOGLE CLOUD SETTINGS ================================ //
+// =========================== GOOGLE CLOUD TTS SETTINGS ================================ //
+
+async function generateAudio(text) {
+    // Construct the request
+  const request = {
+    input: {text: text},
+    // Select the language and SSML voice gender (optional)
+    voice: {languageCode: 'en-US', ssmlGender: 'NEUTRAL'},
+    // select the type of audio encoding
+    audioConfig: {audioEncoding: 'MP3'},
+  };
+
+  // Performs the text-to-speech request
+  const [response] = await ttsclient.synthesizeSpeech(request);
+  return response.audioContent
+}
+
+
+// =========================== GOOGLE CLOUD STT SETTINGS ================================ //
 
 // The encoding of the audio file, e.g. 'LINEAR16'
 // The sample rate of the audio file in hertz, e.g. 16000
