@@ -89,12 +89,14 @@ function App() {
     console.log('recodrder',recodrder)
     recodrder.stopRecording()
     socket.emit('userResponse', {'uid': userEmail, 'response':currentResponse});
+    setMicListening(false)
   }
 
   const startRecording = () => {
     console.log('recodrder',recodrder)
     currentResponse = ''
     recodrder.startRecording(userEmail)
+    setMicListening(true)
   }
 
   const handleMicClick = () => {
@@ -105,7 +107,6 @@ function App() {
       startRecording()
     }
     console.log(`clicked ${miclistening}`)
-    setMicListening(!miclistening)
   }
 
   return (

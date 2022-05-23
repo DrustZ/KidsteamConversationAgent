@@ -4,7 +4,9 @@
 //  Created by Vinzenz Aubry for sansho 24.01.17
 //  Feel free to improve!
 //	Contact: v@vinzenzaubry.com
-var utils = require('./util');
+const utils = require('./util');
+const DialogManager = require('./conversation').DialogManager;
+
 const fs = require('fs');
 const express = require('express'); // const bodyParser = require('body-parser'); // const path = require('path');
 const environmentVars = require('dotenv').config();
@@ -16,7 +18,6 @@ const speechClient = new speech.SpeechClient(); // Creates a client
 
 // TTS
 const textToSpeech = require('@google-cloud/text-to-speech');
-const util = require('./util');
 const ttsclient = new textToSpeech.TextToSpeechClient();
 
 const app = express();
@@ -37,6 +38,7 @@ io.on('connection', function (client) {
   let recognizeStream = null;
   let clientID = "";
   let recording_fname = "";
+  let dm = new DialogManager(1); //dialog manager
 
   client.on('join', function () {
     client.emit('messages', 'Socket Connected to Server');
@@ -54,10 +56,10 @@ io.on('connection', function (client) {
   })
 
   client.on('userResponse', function (data) {
-    console.log(data)
-    generateAudio('testing this').then(audio => {
-      console.log("return!")
-      client.emit('assistantResponse', [audio])
+    // might get multiple sequential responses, separated with ;
+    let responses = dm.getResponse(data['response']).split(';')
+    generateAudios(responses).then(audios => {
+      client.emit('assistantResponse', audios)
     })
   });
 
@@ -82,7 +84,7 @@ io.on('connection', function (client) {
     stopRecognitionStream();
 
     let fkey = `${cid}_${utils.getTimeStamp()}.wav`;
-    utils.uploadFileToS3(recording_dir+'/'+recording_fname, fkey)
+    // utils.uploadFileToS3(recording_dir+'/'+recording_fname, fkey)
   });
 
   client.on('binaryData', function (data) {
@@ -96,25 +98,29 @@ io.on('connection', function (client) {
   });
 
   function startRecognitionStream(client) {
-    recognizeStream = speechClient
-      .streamingRecognize(request)
-      .on('error', console.error)
-      .on('data', (data) => {
-        // process.stdout.write(
-        //   data.results[0] && data.results[0].alternatives[0]
-        //     ? `Transcription: ${data.results[0].alternatives[0].transcript}\n`
-        //     : '\n\nReached transcription time limit, press Ctrl+C\n'
-        // );
-        client.emit('speechData', data);
+    try{
+      recognizeStream = speechClient
+        .streamingRecognize(request)
+        .on('error', console.error)
+        .on('data', (data) => {
+          // process.stdout.write(
+          //   data.results[0] && data.results[0].alternatives[0]
+          //     ? `Transcription: ${data.results[0].alternatives[0].transcript}\n`
+          //     : '\n\nReached transcription time limit, press Ctrl+C\n'
+          // );
+          client.emit('speechData', data);
 
-        // if end of utterance, let's restart stream
-        // this is a small hack. After 65 seconds of silence, the stream will still throw an error for speech length limit
-        if (data.results[0] && data.results[0].isFinal) {
-          stopRecognitionStream();
-          startRecognitionStream(client);
-          // console.log('restarted stream serverside');
-        }
-      });
+          // if end of utterance, let's restart stream
+          // this is a small hack. After 65 seconds of silence, the stream will still throw an error for speech length limit
+          if (data.results[0] && data.results[0].isFinal) {
+            stopRecognitionStream();
+            startRecognitionStream(client);
+            // console.log('restarted stream serverside');
+          }
+        });
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   function stopRecognitionStream() {
@@ -142,6 +148,14 @@ async function generateAudio(text) {
   return response.audioContent
 }
 
+async function generateAudios(texts) {
+  let audios = []
+  for (let text of texts){
+    let audio = await generateAudio(text)
+    audios.push(audio)
+  }
+  return audios
+}
 
 // =========================== GOOGLE CLOUD STT SETTINGS ================================ //
 

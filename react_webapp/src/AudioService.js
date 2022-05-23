@@ -19,14 +19,13 @@ export var speakResponses = (responses, index, callback) => {
     if (index+1 >= responses.length) {
       stop_saying = true
     }
-  
     function endOrCont(){
-      if (stop_saying){
-        callback();
+      if (stop_saying && callback){
+          callback()
       } else {
         setTimeout(function () {
-          speakResponses(responses, index+1)
-        }, 2000);
+          speakResponses(responses, index+1, callback)
+        }, 1200);
       }
     }
 
