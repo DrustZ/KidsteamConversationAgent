@@ -95,8 +95,8 @@ window.onbeforeunload = function () {
 
 export var microphoneRecorder = function() {
     //================= RECORDING =================
-    this.startRecording = () => {
-        socket.emit('startGoogleCloudStream', ''); //init socket Google Speech Connection
+    this.startRecording = (userEmail) => {
+        socket.emit('startGoogleCloudStream', userEmail); //init socket Google Speech Connection
         streamStreaming = true;
         AudioContext = window.AudioContext || window.webkitAudioContext;
         console.log('audio context: ',AudioContext)

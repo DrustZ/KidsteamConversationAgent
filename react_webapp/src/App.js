@@ -36,12 +36,14 @@ function App() {
   }, []);
 
   const userUpdated = (email) => {
+    email = email.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"_")
     setUserEmail(email)
     if (email.lengh == 0) {
       // log out
       console.log('logged out')
     } else {
       console.log(`signed in as ${email}`)
+      socket.emit('userLogin', email)
     }
   }
 
@@ -86,13 +88,13 @@ function App() {
   const stopRecording = () => {
     console.log('recodrder',recodrder)
     recodrder.stopRecording()
-    socket.emit('userResponse', {'uid': 'abc', 'response':currentResponse});
+    socket.emit('userResponse', {'uid': userEmail, 'response':currentResponse});
   }
 
   const startRecording = () => {
     console.log('recodrder',recodrder)
     currentResponse = ''
-    recodrder.startRecording()
+    recodrder.startRecording(userEmail)
   }
 
   const handleMicClick = () => {

@@ -4,7 +4,8 @@
 //  Created by Vinzenz Aubry for sansho 24.01.17
 //  Feel free to improve!
 //	Contact: v@vinzenzaubry.com
-const util = require('util');
+var utils = require('./util');
+const fs = require('fs');
 const express = require('express'); // const bodyParser = require('body-parser'); // const path = require('path');
 const environmentVars = require('dotenv').config();
 const WavFileWriter = require('wav').FileWriter;
@@ -15,6 +16,7 @@ const speechClient = new speech.SpeechClient(); // Creates a client
 
 // TTS
 const textToSpeech = require('@google-cloud/text-to-speech');
+const util = require('./util');
 const ttsclient = new textToSpeech.TextToSpeechClient();
 
 const app = express();
@@ -23,12 +25,18 @@ const server = require('http').createServer(app);
 
 const io = require('socket.io')(server);
 
-// =========================== SOCKET.IO ================================ //
-let outputFileStream;
+const recording_dir = './recordings'
+if (!fs.existsSync(recording_dir)){
+  fs.mkdirSync(recording_dir);
+}
 
+// =========================== SOCKET.IO ================================ //
 io.on('connection', function (client) {
   console.log('Client Connected to server');
+  let outputFileStream;
   let recognizeStream = null;
+  let clientID = "";
+  let recording_fname = "";
 
   client.on('join', function () {
     client.emit('messages', 'Socket Connected to Server');
@@ -38,6 +46,13 @@ io.on('connection', function (client) {
     client.emit('broad', data);
   });
 
+  client.on('userLogin', function (cid) {
+    console.log('get cid ', cid)
+    clientID = cid;
+    // clean all cached recordings
+    utils.deleteDirFilesWithPrefix(cid, recording_dir+'/')
+  })
+
   client.on('userResponse', function (data) {
     console.log(data)
     generateAudio('testing this').then(audio => {
@@ -46,23 +61,28 @@ io.on('connection', function (client) {
     })
   });
 
-  client.on('startGoogleCloudStream', function (data) {
-    startRecognitionStream(this, data);
+  client.on('startGoogleCloudStream', function (cid) {
+    startRecognitionStream(this);
     console.log("start")
-    outputFileStream = new WavFileWriter(`test.wav`, {
+    clientID = cid;
+    recording_fname = `${cid}_${utils.getTimeStamp()}.wav`;
+    outputFileStream = new WavFileWriter(recording_dir+'/'+recording_fname, {
       sampleRate: 16000,
       bitDepth: 16,
       channels: 1
     });
   });
 
-  client.on('endGoogleCloudStream', function () {
+  client.on('endGoogleCloudStream', function (cid) {
     if (outputFileStream) {
       outputFileStream.end();
     }
-  
+    clientID = cid;
     outputFileStream = null;
     stopRecognitionStream();
+
+    let fkey = `${cid}_${utils.getTimeStamp()}.wav`;
+    utils.uploadFileToS3(recording_dir+'/'+recording_fname, fkey)
   });
 
   client.on('binaryData', function (data) {
