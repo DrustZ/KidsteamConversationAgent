@@ -74,6 +74,13 @@ io.on('connection', function (client) {
       dm = new DialogManager(day)
       console.log('[day of user] ', day, sameday)
       client.emit('userday', {'day':day, 'sameday': same_day})
+      // generate greeting audios
+      let greetings = dm.getGreetings().split(';')
+      console.log(greetings)
+      generateAudios(greetings).then(audios => {
+        client.emit('greetingResponse', 
+                    {'audios': audios})
+      })
     })
   })
 

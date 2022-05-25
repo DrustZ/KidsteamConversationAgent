@@ -12,13 +12,16 @@ import { GoogleLogin } from './components/GoogleLogin';
 import { microphoneRecorder, socket, speakResponses } from './AudioService'
 
 var currentResponse = ''
+var greetingaudio = null
 
 function App() {
   // create states for current day and what the app state is
   const [day, setDay, dayRef] = useState(1);
-  const [issameday, setIsSameDay, issamedayRef] = useState(false);
+
+  const [issameday, setIsSameDay, issamedayRef] = useState(false)
   const [userEmail, setUserEmail, userEmailRef] = useState('')
   // ========== MIC status ================
+  const [showmic, setShowMic, showmicRef] = useState(false)
   // whether the mic is listening
   const [miclistening, setMicListening, miclisteningRef] = useState(false);
   // whether the audio is playing
@@ -27,7 +30,8 @@ function App() {
   const [recognizeFinished, setRecognizeFinished, recognizeFinishedRef] = useState(true);
   const [clickwhenrecognize, setClickWhenRecgnize, clickwhenrecognizeRef] = useState(false);
   
-  const [appState, setAppState] = useState(<OnboardingPage />);
+  const [currentpage, setCurrentPage, currentpageRef] = useState(<OnboardingPage />);
+  const [appState, setAppState, appStateRef] = useState('onboarding');
   var recodrder = new microphoneRecorder()
 
   // init data
@@ -35,14 +39,17 @@ function App() {
     // configuration of the socketIO
     socket.on('assistantResponse', (responses) => {
       setAudioPlaying(true)
-
       if (responses['finished']) {
         //finish this session
       }
-
       speakResponses(responses['audios'], 0, startRecording)
     })
-    
+
+    socket.on('greetingResponse', (responses) => {
+      console.log('set audios')
+      greetingaudio = responses
+    })
+
     socket.on('speechData', function (data) {
       handleSpeechData(data)
     });
@@ -65,6 +72,9 @@ function App() {
       console.log(`signed in as ${email}`)
       socket.emit('userLogin', email)
     }
+    setCurrentPage(<OnboardingPage 
+                    isloggedin={email.length > 0}
+                    onStartBtnClick={() => onStartBtnClick()}/>)
   }
 
   const handleSpeechData = (data) => {
@@ -81,32 +91,6 @@ function App() {
       }
     } else if (dataFinal == false) {
       setRecognizeFinished(false)
-    }
-  }
-
-  // callback function used to change state of app
-  function handleNewState(state) {
-    currentResponse = ''
-    switch (state) {
-      case "onbarding":
-        setAppState(<OnboardingPage/>)
-        break;
-      case "reminder":
-        setAppState(<ReminderPage day={day} />)
-        break;
-      case "prompt":
-        setMicListening(true)
-        setAppState(<PromptPage />)
-        break;
-      case "interaction":
-        setMicListening(true)
-        setAppState(<InteractionPage />)
-        break;
-      case "finish":
-        setAppState(<FinishPage day={day} />)
-        break;
-      default:
-        setAppState(<OnboardingPage />)
     }
   }
 
@@ -136,11 +120,51 @@ function App() {
     }
   }
 
+  // callback function used to change state of app
+  function handleNewState() {
+    currentResponse = ''
+    switch (appState) {
+      case "onbarding":
+        setCurrentPage(<OnboardingPage 
+                        isloggedin={userEmail.length > 0}
+                        onStartBtnClick={() => onStartBtnClick}/>)
+        break;
+      case "reminder":
+        setCurrentPage(<ReminderPage day={day} />)
+        break;
+      case "prompt":
+        setMicListening(true)
+        setCurrentPage(<PromptPage />)
+        break;
+      case "interaction":
+        setMicListening(true)
+        setCurrentPage(<InteractionPage />)
+        break;
+      case "finish":
+        setCurrentPage(<FinishPage day={day} />)
+        break;
+      default:
+        setCurrentPage(<OnboardingPage />)
+    }
+  }
+
+  // ======= Page callbacks ==============
+  // user click start button to start conversation
+  const onStartBtnClick = () => {
+    console.log('start click')
+    // setAppState('welcome')
+    // handleNewState()
+    
+    setShowMic(true)
+    setAudioPlaying(true)
+    speakResponses(greetingaudio['audios'], 0, startRecording)
+  }
+
   return (
     <div className="voiceapp">
-      <GoogleLogin userUpdated={userUpdated}/>
-      {appState}
-      <Mic isListening={miclisteningRef.current} onMicClick={handleMicClick}/>
+      {appState === 'onboarding' && <GoogleLogin userUpdated={userUpdated}/>}
+      {currentpage}
+      {showmic && <Mic isListening={miclisteningRef.current} onMicClick={handleMicClick}/>}
     </div>
   );
 }

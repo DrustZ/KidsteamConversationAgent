@@ -39,6 +39,15 @@ module.exports = {
     DialogManager: function (day) {
         this.day = day
         this.status = '0'
+        this.getGreetings = () => {
+            try {
+                let response = script_states[this.day][this.status]['Speech']
+                return response
+            } catch (e) {
+                console.log(e)
+                return ''
+            }
+        },
         this.getResponse = (userInput) => {
             try {
                 let userinput = userInput.
