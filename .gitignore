@@ -12,6 +12,9 @@ node_modules
 build
 *.wav
 
+/node_server/transcriptions/*
+/node_server/recordings/*
+
 # misc
 .DS_Store
 .env.local

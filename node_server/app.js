@@ -27,18 +27,32 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 const recording_dir = './recordings'
+const text_dir = './transcriptions'
 if (!fs.existsSync(recording_dir)){
   fs.mkdirSync(recording_dir);
 }
+if (!fs.existsSync(text_dir)){
+  fs.mkdirSync(text_dir);
+}
+
+// max study days
+const maxDay = 5
 
 // =========================== SOCKET.IO ================================ //
 io.on('connection', function (client) {
   console.log('Client Connected to server');
-  let outputFileStream;
+  // file streams
+  let outputFileStream = null;
   let recognizeStream = null;
-  let clientID = "";
+  let textloggerStream = null;
+
+  let day = 0;
+  let sameday = false;
+  let clientID;
+
   let recording_fname = "";
-  let dm = new DialogManager(1); //dialog manager
+  let log_fname = "";
+  let dm; //dialog manager
 
   client.on('join', function () {
     client.emit('messages', 'Socket Connected to Server');
@@ -49,25 +63,69 @@ io.on('connection', function (client) {
   });
 
   client.on('userLogin', function (cid) {
-    console.log('get cid ', cid)
     clientID = cid;
+    console.log('get cid ', clientID)
     // clean all cached recordings
-    // utils.deleteDirFilesWithPrefix(cid, recording_dir+'/')
+    utils.deleteDirFilesWithPrefix(cid, recording_dir+'/')
+    utils.deleteDirFilesWithPrefix(cid, text_dir+'/')
+    utils.getDayOfUser(cid, (user_day, same_day) => {
+      day = user_day
+      sameday = same_day
+      dm = new DialogManager(day)
+      console.log('[day of user] ', day, sameday)
+      client.emit('userday', {'day':day, 'sameday': same_day})
+    })
   })
 
   client.on('userResponse', function (data) {
+    let responses = [];
+    let finished = false;
     // might get multiple sequential responses, separated with ;
-    let responses = dm.getResponse(data['response']).split(';')
+    if (dm === undefined || day === 0) {
+      responses = ["Connection lost. Please refresh the page to restart."]
+    } else {
+      if (textloggerStream === null) {
+        log_fname = `${clientID}_day${day}_${utils.getTimeStamp()}.txt`;
+        fs.closeSync(fs.openSync(text_dir+'/'+log_fname, 'w'))
+        textloggerStream = fs.createWriteStream(text_dir+'/'+log_fname, {
+          flags: 'a' // 'a' means appending (old data will be preserved)
+        })
+        textloggerStream.write(`START DAY ${day}\n`)
+      }
+
+      let dmresponse = dm.getResponse(data['response'])
+      responses = dmresponse.split(';')
+      textloggerStream.write(`user:\t${data[`response`]}\n`)
+      textloggerStream.write(`da:\t${dmresponse}\n`)
+
+      if (dm.status === 'finish') {
+        //conversation finished. 
+        finished = true;
+        utils.finishConversation(clientID, day)
+        textloggerStream.write(`FINISH\n`)
+        textloggerStream.end()
+        textloggerStream = null
+        utils.uploadFileToS3NDelete(text_dir+'/'+log_fname, log_fname)
+      }
+    }
     generateAudios(responses).then(audios => {
-      client.emit('assistantResponse', audios)
+      client.emit('assistantResponse', {'audios': audios, 'finished': finished})
     })
   });
 
-  client.on('startGoogleCloudStream', function (cid) {
+  // client is leaving the page
+  client.on('clientleave', (data) => {
+    if (textloggerStream) {
+      textloggerStream.end()
+      textloggerStream = null
+    }
+    utils.uploadFileToS3NDelete(text_dir+'/'+log_fname, log_fname)
+  })
+
+  client.on('startGoogleCloudStream', function (data) {
     startRecognitionStream(this);
     console.log("start")
-    clientID = cid;
-    recording_fname = `${cid}_${utils.getTimeStamp()}.wav`;
+    recording_fname = `${clientID}_${utils.getTimeStamp()}.wav`;
     outputFileStream = new WavFileWriter(recording_dir+'/'+recording_fname, {
       sampleRate: 16000,
       bitDepth: 16,
@@ -75,16 +133,13 @@ io.on('connection', function (client) {
     });
   });
 
-  client.on('endGoogleCloudStream', function (cid) {
+  client.on('endGoogleCloudStream', function (data) {
     if (outputFileStream) {
       outputFileStream.end();
     }
-    clientID = cid;
     outputFileStream = null;
     stopRecognitionStream();
-
-    let fkey = `${cid}_${utils.getTimeStamp()}.wav`;
-    // utils.uploadFileToS3(recording_dir+'/'+recording_fname, fkey)
+    // utils.uploadFileToS3NDelete(recording_dir+'/'+recording_fname, recording_fname)
   });
 
   client.on('binaryData', function (data) {

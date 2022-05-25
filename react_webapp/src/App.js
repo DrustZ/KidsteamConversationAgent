@@ -16,6 +16,7 @@ var currentResponse = ''
 function App() {
   // create states for current day and what the app state is
   const [day, setDay, dayRef] = useState(1);
+  const [issameday, setIsSameDay, issamedayRef] = useState(false);
   const [userEmail, setUserEmail, userEmailRef] = useState('')
   // ========== MIC status ================
   // whether the mic is listening
@@ -34,12 +35,24 @@ function App() {
     // configuration of the socketIO
     socket.on('assistantResponse', (responses) => {
       setAudioPlaying(true)
-      speakResponses(responses, 0, startRecording)
+
+      if (responses['finished']) {
+        //finish this session
+      }
+
+      speakResponses(responses['audios'], 0, startRecording)
     })
     
     socket.on('speechData', function (data) {
       handleSpeechData(data)
     });
+
+    socket.on('userday', (data) => {
+      //get the day of the user
+      setDay(data['day'])
+      setIsSameDay(data['sameday'])
+      console.log('user day: ', data)
+    })
   }, []);
 
   const userUpdated = (email) => {

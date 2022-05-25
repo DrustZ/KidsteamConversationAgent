@@ -88,6 +88,7 @@ const constraints = {
 window.onbeforeunload = function () {
     if (streamStreaming) {
         socket.emit('endGoogleCloudStream', '');
+        socket.emit('clientleave', '');
     }
     socket.disconnect();
 };
