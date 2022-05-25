@@ -52,7 +52,7 @@ io.on('connection', function (client) {
     console.log('get cid ', cid)
     clientID = cid;
     // clean all cached recordings
-    utils.deleteDirFilesWithPrefix(cid, recording_dir+'/')
+    // utils.deleteDirFilesWithPrefix(cid, recording_dir+'/')
   })
 
   client.on('userResponse', function (data) {

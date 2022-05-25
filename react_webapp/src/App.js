@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+// to avoid callback still only use old state values
+import useState from 'react-usestateref'
+
 import OnboardingPage from './pages/OnboardingPage';
 import ReminderPage from './pages/ReminderPage';
 import PromptPage from './pages/PromptPage';
@@ -12,27 +15,31 @@ var currentResponse = ''
 
 function App() {
   // create states for current day and what the app state is
-  const [day, setDay] = useState(1);
-  const [userEmail, setUserEmail] = useState('')
+  const [day, setDay, dayRef] = useState(1);
+  const [userEmail, setUserEmail, userEmailRef] = useState('')
   // ========== MIC status ================
   // whether the mic is listening
-  const [miclistening, setMicListening] = useState(false);
+  const [miclistening, setMicListening, miclisteningRef] = useState(false);
+  // whether the audio is playing
+  const [audioplaying, setAudioPlaying, audioplayingRef] = useState(false);
   // whether the current recognition is finished
-  const [recognizeFinished, setRecognizeFinished] = useState(true);
-
+  const [recognizeFinished, setRecognizeFinished, recognizeFinishedRef] = useState(true);
+  const [clickwhenrecognize, setClickWhenRecgnize, clickwhenrecognizeRef] = useState(false);
+  
   const [appState, setAppState] = useState(<OnboardingPage />);
   var recodrder = new microphoneRecorder()
 
   // init data
   useEffect(() => {
     // configuration of the socketIO
+    socket.on('assistantResponse', (responses) => {
+      setAudioPlaying(true)
+      speakResponses(responses, 0, startRecording)
+    })
+    
     socket.on('speechData', function (data) {
       handleSpeechData(data)
     });
-
-    socket.on('assistantResponse', (responses) => {
-      speakResponses(responses, 0, startRecording)
-    })
   }, []);
 
   const userUpdated = (email) => {
@@ -54,6 +61,11 @@ function App() {
       currentResponse += ' ' + response
       console.log(currentResponse)
       setRecognizeFinished(true)
+
+      if (clickwhenrecognizeRef.current){
+        setClickWhenRecgnize(false)
+        handleMicClick()
+      }
     } else if (dataFinal == false) {
       setRecognizeFinished(false)
     }
@@ -86,34 +98,36 @@ function App() {
   }
 
   const stopRecording = () => {
-    console.log('recodrder',recodrder)
     recodrder.stopRecording()
-    socket.emit('userResponse', {'uid': userEmail, 'response':currentResponse});
+    socket.emit('userResponse', {'uid': userEmailRef.current, 'response':currentResponse});
     setMicListening(false)
   }
 
   const startRecording = () => {
-    console.log('recodrder',recodrder)
+    setAudioPlaying(false)
     currentResponse = ''
-    recodrder.startRecording(userEmail)
+    recodrder.startRecording(userEmailRef.current)
     setMicListening(true)
   }
 
   const handleMicClick = () => {
-    if (miclistening) {
-      if (!recognizeFinished) { return} //return if the final recognition hasn't come
+    if (miclisteningRef.current) {
+      if (!recognizeFinishedRef.current) { 
+        if (!clickwhenrecognizeRef.current) { setClickWhenRecgnize(true) }
+        return 
+      } //return if the final recognition hasn't come
       stopRecording()
     } else {
+      if (audioplayingRef.current) { return } // return if the assistant is speaking
       startRecording()
     }
-    console.log(`clicked ${miclistening}`)
   }
 
   return (
     <div className="voiceapp">
       <GoogleLogin userUpdated={userUpdated}/>
       {appState}
-      <Mic isListening={miclistening} onMicClick={handleMicClick}/>
+      <Mic isListening={miclisteningRef.current} onMicClick={handleMicClick}/>
     </div>
   );
 }
