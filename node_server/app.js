@@ -75,8 +75,7 @@ io.on('connection', function (client) {
       console.log('[day of user] ', day, sameday)
       client.emit('userday', {'day':day, 'sameday': same_day})
       // generate greeting audios
-      let greetings = dm.getGreetings().split(';')
-      console.log(greetings)
+      let greetings = dm.getGreetingResponse().split(';')
       generateAudios(greetings).then(audios => {
         client.emit('greetingResponse', 
                     {'audios': audios})
@@ -86,11 +85,12 @@ io.on('connection', function (client) {
 
   client.on('userResponse', function (data) {
     let responses = [];
-    let finished = false;
+    let changeStatus = ''; // the status to change to
     // might get multiple sequential responses, separated with ;
     if (dm === undefined || day === 0) {
       responses = ["Connection lost. Please refresh the page to restart."]
     } else {
+      // init new text logger 
       if (textloggerStream === null) {
         log_fname = `${clientID}_day${day}_${utils.getTimeStamp()}.txt`;
         fs.closeSync(fs.openSync(text_dir+'/'+log_fname, 'w'))
@@ -105,18 +105,23 @@ io.on('connection', function (client) {
       textloggerStream.write(`user:\t${data[`response`]}\n`)
       textloggerStream.write(`da:\t${dmresponse}\n`)
 
+      console.log('status: ', dm.status)
       if (dm.status === 'finish') {
         //conversation finished. 
-        finished = true;
+        changeStatus = 'finish';
         utils.finishConversation(clientID, day)
         textloggerStream.write(`FINISH\n`)
         textloggerStream.end()
         textloggerStream = null
         utils.uploadFileToS3NDelete(text_dir+'/'+log_fname, log_fname)
       }
+
+      if (dm.status === '1') {
+        changeStatus = 'interaction'
+      }
     }
     generateAudios(responses).then(audios => {
-      client.emit('assistantResponse', {'audios': audios, 'finished': finished})
+      client.emit('assistantResponse', {'audios': audios, 'changeStatus': changeStatus})
     })
   });
 

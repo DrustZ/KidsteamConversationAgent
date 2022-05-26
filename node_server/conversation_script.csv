@@ -1,5 +1,6 @@
 ﻿Day,StateID,Speech,Response-Transition,Recovery
-1,0,Are you ready to start a new adventure with our superhero Zip?,yes-finish,"Sorry, I did not catch that. Can you say again?"
+1,greeting, Welcome; Today is our first day joining zip, na-0, "Sorry, again?"
+1,0,Say I am ready to start day one and let's go?,dayone-1,"Sorry, I did not catch that. Can you say again?"
 1,1,"Ok, thanks for the response; Before we move on; let’s recap what we heard yesterday",yes-4,"Sorry, I did not catch that. Can you say again?"
 1,4,"Thanks for sharing! Today we are going to read how Zip help another child to ask for help. Select a, b, or c",a-5_a; b-5_b; c-5_c,"Sorry, I did not catch that. Can you say again?"
 1,5_a,Lily called her friend Sally,na-finish,"Sorry, I did not catch that. Can you say again?"

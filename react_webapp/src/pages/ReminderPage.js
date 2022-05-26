@@ -9,7 +9,7 @@ export default function ReminderPage(props) {
       {/* create diamond with day number in it */}
       <div className='diamond-day'>
         <img src='/img/diamond-day.png' alt='diamond showing the interaction day' />
-        <div class='day-text'>{props.day}</div>
+        <div className='day-text'>{props.day}</div>
       </div>
       <DiamondList day={props.day} />
       <h1>5 day story!</h1>

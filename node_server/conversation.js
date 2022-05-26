@@ -38,10 +38,10 @@ function splitNTrim(str, splitter) {
 module.exports = {
     DialogManager: function (day) {
         this.day = day
-        this.status = '0'
-        this.getGreetings = () => {
+        this.status = 'greeting'
+        this.getGreetingResponse = () => {
             try {
-                let response = script_states[this.day][this.status]['Speech']
+                let response = script_states[this.day]['greeting']['Speech']
                 return response
             } catch (e) {
                 console.log(e)

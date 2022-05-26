@@ -34,19 +34,24 @@ function App() {
   const [appState, setAppState, appStateRef] = useState('onboarding');
   var recodrder = new microphoneRecorder()
 
-  // init data
+  // init data 
   useEffect(() => {
     // configuration of the socketIO
     socket.on('assistantResponse', (responses) => {
       setAudioPlaying(true)
-      if (responses['finished']) {
-        //finish this session
+      // if after the response need to change the status
+      // we change the current status
+      if (responses['changeStatus'].length > 0){
+        setAppState(responses['changeStatus'])
+        console.log('app state changed to ', responses['changeStatus'])
       }
-      speakResponses(responses['audios'], 0, startRecording)
+      speakResponses(responses['audios'], 0, () => {
+        if (appStateRef.current != 'finish')
+          { startRecording() }
+      })
     })
 
     socket.on('greetingResponse', (responses) => {
-      console.log('set audios')
       greetingaudio = responses
     })
 
@@ -133,14 +138,13 @@ function App() {
         setCurrentPage(<ReminderPage day={day} />)
         break;
       case "prompt":
-        setMicListening(true)
-        setCurrentPage(<PromptPage />)
+        setCurrentPage(<PromptPage day={day}/>)
         break;
       case "interaction":
-        setMicListening(true)
         setCurrentPage(<InteractionPage />)
         break;
       case "finish":
+        setShowMic(false)
         setCurrentPage(<FinishPage day={day} />)
         break;
       default:
@@ -148,23 +152,31 @@ function App() {
     }
   }
 
+  // whenever state hanges, we call the handle funciton
+  useEffect(() => {
+    handleNewState()
+  }, [appState])
+
   // ======= Page callbacks ==============
   // user click start button to start conversation
   const onStartBtnClick = () => {
-    console.log('start click')
-    // setAppState('welcome')
-    // handleNewState()
-    
     setShowMic(true)
     setAudioPlaying(true)
-    speakResponses(greetingaudio['audios'], 0, startRecording)
+    speakResponses(greetingaudio['audios'], 0, () => {
+      // change to prompt
+      setAppState('prompt')
+      // we fake a user respones to start the real first conversation
+      socket.emit('userResponse', {'uid': userEmailRef.current, 'response':'start prompt'});
+    })
+
+    setAppState('reminder')
   }
 
   return (
     <div className="voiceapp">
       {appState === 'onboarding' && <GoogleLogin userUpdated={userUpdated}/>}
       {currentpage}
-      {showmic && <Mic isListening={miclisteningRef.current} onMicClick={handleMicClick}/>}
+      {showmicRef.current && <Mic isListening={miclisteningRef.current} onMicClick={handleMicClick}/>}
     </div>
   );
 }

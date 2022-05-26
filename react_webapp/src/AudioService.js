@@ -43,7 +43,7 @@ export var playOutput = (arrayBuffer, callback) => {
   }
   try {
       if(arrayBuffer.byteLength > 0){
-          console.log(arrayBuffer.byteLength);
+        //   console.log(arrayBuffer.byteLength);
           audioContext.decodeAudioData(arrayBuffer,
           function(buffer){
               audioContext.resume();
