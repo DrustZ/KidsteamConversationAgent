@@ -125,6 +125,13 @@ io.on('connection', function (client) {
     })
   });
 
+  // client is sending a text for TTS speech audio
+  client.on('speechText', (data) => {
+    generateAudios([data['text']]).then(audios => {
+      client.emit('textaudio', {'audios': audios})
+    })
+  })
+
   // client is leaving the page
   client.on('clientleave', (data) => {
     if (textloggerStream) {

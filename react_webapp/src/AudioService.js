@@ -127,7 +127,7 @@ export var microphoneRecorder = function() {
     }
 
     this.stopRecording = () => {
-        console.log("stop recording")
+        // console.log("stop recording")
         streamStreaming = false;
         socket.emit('endGoogleCloudStream', '');
         let track = globalStream.getTracks()[0];

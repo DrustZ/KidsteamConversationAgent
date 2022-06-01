@@ -14,6 +14,12 @@ import { microphoneRecorder, socket, speakResponses } from './AudioService'
 var currentResponse = ''
 var greetingaudio = null
 
+var silentTime = 6000 // 6 secs
+var timeInterval;
+var currentSilence = 0; // max silentces = 2
+
+var recodrder = new microphoneRecorder()
+
 function App() {
   // create states for current day and what the app state is
   const [day, setDay, dayRef] = useState(1);
@@ -32,7 +38,6 @@ function App() {
   
   const [currentpage, setCurrentPage, currentpageRef] = useState(<OnboardingPage />);
   const [appState, setAppState, appStateRef] = useState('onboarding');
-  var recodrder = new microphoneRecorder()
 
   // init data 
   useEffect(() => {
@@ -47,7 +52,11 @@ function App() {
       }
       speakResponses(responses['audios'], 0, () => {
         if (appStateRef.current != 'finish')
-          { startRecording() }
+          { 
+            startRecording() 
+            // set a timer for silence & remind
+            timeInterval = initTimer()
+          }
       })
     })
 
@@ -58,6 +67,16 @@ function App() {
     socket.on('speechData', function (data) {
       handleSpeechData(data)
     });
+
+    // for reminder - get the reminder audio
+    socket.on('textaudio', (responses) => {
+      speakResponses(responses['audios'], 0, () => {
+          console.log("resume!")
+          resumeRecording()
+          // set a timer for silence & remind
+          timeInterval = initTimer()
+      })
+    })
 
     socket.on('userday', (data) => {
       //get the day of the user
@@ -83,6 +102,10 @@ function App() {
   }
 
   const handleSpeechData = (data) => {
+    // reset timer every time we get speech
+    currentSilence = 0 
+    clearTimeout(timeInterval)
+
     var dataFinal = undefined || data.results[0].isFinal;
     if (dataFinal){
       let response = data.results[0].alternatives[0].transcript
@@ -93,14 +116,50 @@ function App() {
       if (clickwhenrecognizeRef.current){
         setClickWhenRecgnize(false)
         handleMicClick()
+      } else {
+        timeInterval = initTimer()
       }
     } else if (dataFinal == false) {
       setRecognizeFinished(false)
     }
+  } 
+
+  const initTimer = () => {
+    clearTimeout(timeInterval)
+    return setInterval(function() {
+      if (currentSilence == 0) {
+        // play reminder
+        pauseRecording()
+        console.log('playing first reminder')
+        socket.emit('speechText', {'text': 'I did not hear anything .'})
+        currentSilence += 1
+      } else {
+        // play default go next message
+        console.log('playing default go')
+        // force stop microphone
+        stopRecording()
+        currentSilence = 0
+      }
+    }, silentTime); 
+  }
+
+  const resumeRecording = () => {
+    console.log('resume recording')
+    setAudioPlaying(false)
+    recodrder.startRecording(userEmailRef.current)
+    setMicListening(true)
+  }
+
+  const pauseRecording = () => {
+    console.log('pause recording')
+    recodrder.stopRecording()
+    setClickWhenRecgnize(false)
+    setMicListening(false)
   }
 
   const stopRecording = () => {
     recodrder.stopRecording()
+    setClickWhenRecgnize(false)
     socket.emit('userResponse', {'uid': userEmailRef.current, 'response':currentResponse});
     setMicListening(false)
   }
