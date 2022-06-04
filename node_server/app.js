@@ -38,6 +38,8 @@ if (!fs.existsSync(text_dir)){
 // max study days
 const maxDay = 5
 
+var classification_client;
+
 // =========================== SOCKET.IO ================================ //
 io.on('connection', function (client) {
   console.log('Client Connected to server');
@@ -54,8 +56,10 @@ io.on('connection', function (client) {
   let log_fname = "";
   let dm; //dialog manager
 
-  client.on('join', function () {
-    client.emit('messages', 'Socket Connected to Server');
+  client.on('join', function (data) {
+    if (data === 'sentiment') {
+      classification_client = client;
+    }
   });
 
   client.on('messages', function (data) {
@@ -84,45 +88,16 @@ io.on('connection', function (client) {
   })
 
   client.on('userResponse', function (data) {
-    let responses = [];
-    let changeStatus = ''; // the status to change to
-    // might get multiple sequential responses, separated with ;
-    if (dm === undefined || day === 0) {
-      responses = ["Connection lost. Please refresh the page to restart."]
-    } else {
-      // init new text logger 
-      if (textloggerStream === null) {
-        log_fname = `${clientID}_day${day}_${utils.getTimeStamp()}.txt`;
-        fs.closeSync(fs.openSync(text_dir+'/'+log_fname, 'w'))
-        textloggerStream = fs.createWriteStream(text_dir+'/'+log_fname, {
-          flags: 'a' // 'a' means appending (old data will be preserved)
-        })
-        textloggerStream.write(`START DAY ${day}\n`)
-      }
-
-      let dmresponse = dm.getResponse(data['response'])
-      responses = dmresponse.split(';')
-      textloggerStream.write(`user:\t${data[`response`]}\n`)
-      textloggerStream.write(`da:\t${dmresponse}\n`)
-
-      console.log('status: ', dm.status)
-      if (dm.status === 'finish') {
-        //conversation finished. 
-        changeStatus = 'finish';
-        utils.finishConversation(clientID, day)
-        textloggerStream.write(`FINISH\n`)
-        textloggerStream.end()
-        textloggerStream = null
-        utils.uploadFileToS3NDelete(text_dir+'/'+log_fname, log_fname)
-      }
-
-      if (dm.status === '1') {
-        changeStatus = 'interaction'
-      }
-    }
-    generateAudios(responses).then(audios => {
-      client.emit('assistantResponse', {'audios': audios, 'changeStatus': changeStatus})
-    })
+    classification_client.emit(
+      "get_sentiment", "world is def flat", (sentdata) => {
+      console.log(sentdata)
+      
+      res = getResponses(data)
+      
+      generateAudios(res[0]).then(audios => {
+        client.emit('assistantResponse', {'audios': audios, 'changeStatus': res[1]})
+      })
+    });
   });
 
   // client is sending a text for TTS speech audio
@@ -170,6 +145,47 @@ io.on('connection', function (client) {
       recognizeStream.write(data);
     }
   });
+
+  function getResponses(data) {
+    let responses = [];
+    let changeStatus = ''; // the status to change to
+    // might get multiple sequential responses, separated with ;
+    if (dm === undefined || day === 0) {
+      responses = ["Connection lost. Please refresh the page to restart."]
+    } else {
+      // init new text logger 
+      if (textloggerStream === null) {
+        log_fname = `${clientID}_day${day}_${utils.getTimeStamp()}.txt`;
+        fs.closeSync(fs.openSync(text_dir+'/'+log_fname, 'w'))
+        textloggerStream = fs.createWriteStream(text_dir+'/'+log_fname, {
+          flags: 'a' // 'a' means appending (old data will be preserved)
+        })
+        textloggerStream.write(`START DAY ${day}\n`)
+      }
+
+      let dmresponse = dm.getResponse(data['response'])
+      responses = dmresponse.split(';')
+      textloggerStream.write(`user:\t${data[`response`]}\n`)
+      textloggerStream.write(`da:\t${dmresponse}\n`)
+
+      console.log('status: ', dm.status)
+      if (dm.status === 'finish') {
+        //conversation finished. 
+        changeStatus = 'finish';
+        utils.finishConversation(clientID, day)
+        textloggerStream.write(`FINISH\n`)
+        textloggerStream.end()
+        textloggerStream = null
+        utils.uploadFileToS3NDelete(text_dir+'/'+log_fname, log_fname)
+      }
+
+      if (dm.status === '1') {
+        changeStatus = 'interaction'
+      }
+    }
+    return [responses, changeStatus]
+  }
+ 
 
   function startRecognitionStream(client) {
     try{
