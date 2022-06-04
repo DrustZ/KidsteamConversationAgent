@@ -89,10 +89,9 @@ io.on('connection', function (client) {
 
   client.on('userResponse', function (data) {
     classification_client.emit(
-      "get_sentiment", "world is def flat", (sentdata) => {
-      console.log(sentdata)
+      "get_sentiment", data['text'], (sentdata) => {
       
-      res = getResponses(data)
+      let res = getResponses(data)
       
       generateAudios(res[0]).then(audios => {
         client.emit('assistantResponse', {'audios': audios, 'changeStatus': res[1]})

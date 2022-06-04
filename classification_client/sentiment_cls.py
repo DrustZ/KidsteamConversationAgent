@@ -16,10 +16,17 @@ sio = socketio.Client()
 sio.connect('http://127.0.0.1:1337')
 print("connected!")
 sio.emit('join', 'sentiment')
+sio.emit('userResponse', 'sentiment')
 
 @sio.on('get_sentiment')
 def on_message(data):
-    text_sentiment = sentiment_pipeline([data],**tokenizer_kwargs)
-    print(text_sentiment)
-    return {'sentiment': 'positive', 'message': text_sentiment[0]}
+    try: 
+        text_sentiment = sentiment_pipeline([data],**tokenizer_kwargs)
+        if len(text_sentiment) == 1:
+            return {'sentiment': text_sentiment[0]['label'], 'score': text_sentiment[0]['score']}
+        else:
+            return {'sentiment': 'neutral', 'score': 1}
+    except:
+        return {'sentiment': 'neutral', 'score': 1}
+
 
