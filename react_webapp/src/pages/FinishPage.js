@@ -7,7 +7,8 @@ export default function FinishPage(props) {
   return (
     <main className='finish'>
       <DiamondList day={props.day} />
-      <h1>Come back tomorrow!</h1>
+      <h1>Come back tomorrow! </h1>
+      <h1>Bye for now!</h1>
       <p>You have {remainingDays[props.day]} to go</p>
     </main>
   );
