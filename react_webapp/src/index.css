@@ -35,15 +35,13 @@ h1 {
   text-align: center;
 }
 
-
-
 .diamond-day {
   position: relative;
   color: white;
 }
 
 .day-text {
-  color: #FA532E;
+  color: rgb(250, 83, 46);
   font-size: 45px;
   font-weight: bolder;
 
@@ -59,7 +57,8 @@ h1 {
 }
 
 .diamond {
-  padding: 1rem 0.75rem
+  padding: 3rem 0.75rem;
+  width: 70px;
 }
 
 /* Prompt Page Rules */
@@ -73,8 +72,9 @@ h1 {
 
 .GloginContainer {
   position: absolute;
-  right: 50px;
-  top: 50px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .btn {
@@ -203,6 +203,7 @@ h1 {
 
 .welcome-onboarding {
   text-align: center;
+  margin-top: 0px;
 }
 
 .superhero-img-div {
@@ -217,4 +218,10 @@ h1 {
 
 .start_button {
   /* need to center the button after the text */
+  margin: auto;
+
+}
+
+#logoutBtn {
+  display: none;
 }
