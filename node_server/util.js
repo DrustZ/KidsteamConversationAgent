@@ -8,8 +8,8 @@ const ID = process.env.AWSAccessKeyId;
 const SECRET = process.env.AWSSecretKey;
 
 // The name of the bucket that you have created
-const BUCKET_NAME = 'caskillresponses';
-const DDBTABLENAME = 'caskillrecords'
+const BUCKET_NAME = 'kidsrecording';
+const DDBTABLENAME = 'kidscaskill'
 
 const s3 = new AWS.S3({
     accessKeyId: ID,
