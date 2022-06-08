@@ -87,17 +87,26 @@ io.on('connection', function (client) {
     })
   })
 
+  // client.on('userResponse', function (data) {
+  //   classification_client.emit(
+  //     "get_sentiment", data['text'], (sentdata) => {
+      
+  //     let res = getResponses(data)
+      
+  //     generateAudios(res[0]).then(audios => {
+  //       client.emit('assistantResponse', {'audios': audios, 'changeStatus': res[1]})
+  //     })
+  //   });
+  // });
+
   client.on('userResponse', function (data) {
-    classification_client.emit(
-      "get_sentiment", data['text'], (sentdata) => {
-      
-      let res = getResponses(data)
-      
-      generateAudios(res[0]).then(audios => {
-        client.emit('assistantResponse', {'audios': audios, 'changeStatus': res[1]})
-      })
-    });
+    let res = getResponses(data)
+    
+    generateAudios(res[0]).then(audios => {
+      client.emit('assistantResponse', {'audios': audios, 'changeStatus': res[1]})
+    })
   });
+
 
   // client is sending a text for TTS speech audio
   client.on('speechText', (data) => {

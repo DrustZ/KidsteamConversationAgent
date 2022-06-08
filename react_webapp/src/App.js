@@ -200,7 +200,7 @@ function App() {
         setCurrentPage(<PromptPage day={day}/>)
         break;
       case "interaction":
-        setCurrentPage(<InteractionPage botSpeaking={audioplayingRef.current}/>)
+        setCurrentPage(<InteractionPage botSpeaking={!miclisteningRef.current}/>)
         break;
       case "finish":
         setShowMic(false)
@@ -234,7 +234,9 @@ function App() {
   return (
     <div className="voiceapp">
       {appState === 'onboarding' && <GoogleLogin userUpdated={userUpdated}/>}
-      {currentpage}
+      {/* have to add interaction here so that it can rerender on state change */}
+      {appState === 'interaction' && <InteractionPage botSpeaking={!miclisteningRef.current}/>}
+      {appState != "interaction" && currentpage}
       {showmicRef.current && <Mic isListening={miclisteningRef.current} onMicClick={handleMicClick}/>}
     </div>
   );
