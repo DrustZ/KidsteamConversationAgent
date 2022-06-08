@@ -200,7 +200,7 @@ function App() {
         setCurrentPage(<PromptPage day={day}/>)
         break;
       case "interaction":
-        setCurrentPage(<InteractionPage />)
+        setCurrentPage(<InteractionPage botSpeaking={audioplayingRef.current}/>)
         break;
       case "finish":
         setShowMic(false)

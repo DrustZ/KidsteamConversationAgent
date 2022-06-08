@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 
 export default function PromptPage(props) {
   const daydict = {1:'One', 2:'Two', 3:'Three', 4:'Four', 5:'Five'}
