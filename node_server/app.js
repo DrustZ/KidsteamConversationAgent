@@ -118,7 +118,7 @@ io.on('connection', function (client) {
   client.on('startGoogleCloudStream', function (data) {
     startRecognitionStream(this);
     console.log("start")
-    recording_fname = `${clientID}_${utils.getTimeStamp()}.wav`;
+    recording_fname = `${clientID}-day${day}-${dm.status}-${utils.getTimeStamp()}.wav`;
     outputFileStream = new WavFileWriter(recording_dir+'/'+recording_fname, {
       sampleRate: 16000,
       bitDepth: 16,
