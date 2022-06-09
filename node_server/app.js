@@ -82,36 +82,28 @@ io.on('connection', function (client) {
       let greetings = dm.getGreetingResponse().split(';')
       generateAudios(greetings).then(audios => {
         client.emit('greetingResponse', 
-                    {'audios': audios})
+                    {'audios': audios, 'replies': greetings})
       })
     })
   })
 
-  // client.on('userResponse', function (data) {
-  //   classification_client.emit(
-  //     "get_sentiment", data['text'], (sentdata) => {
-      
-  //     let res = getResponses(data)
-      
-  //     generateAudios(res[0]).then(audios => {
-  //       client.emit('assistantResponse', {'audios': audios, 'changeStatus': res[1]})
-  //     })
-  //   });
-  // });
-
   client.on('userResponse', function (data) {
-    let res = getResponses(data)
-    
-    generateAudios(res[0]).then(audios => {
-      client.emit('assistantResponse', {'audios': audios, 'changeStatus': res[1]})
-    })
+    // classification_client.emit(
+    //   "get_sentiment", data['text'], (sentdata) => {
+      
+      let res = getResponses(data)
+      
+      generateAudios(res[0]).then(audios => {
+        client.emit('assistantResponse', {'audios': audios, 'replies': res[0], 'changeStatus': res[1]})
+      })
+    // });
   });
 
 
   // client is sending a text for TTS speech audio
   client.on('speechText', (data) => {
     generateAudios([data['text']]).then(audios => {
-      client.emit('textaudio', {'audios': audios})
+      client.emit('textaudio', {'audios': audios, 'replies': [data['text']]})
     })
   })
 
@@ -127,7 +119,7 @@ io.on('connection', function (client) {
   client.on('startGoogleCloudStream', function (data) {
     startRecognitionStream(this);
     console.log("start")
-    recording_fname = `${clientID}_${utils.getTimeStamp()}.wav`;
+    recording_fname = `${clientID}-day${day}-${dm.status}-${utils.getTimeStamp()}.wav`;
     outputFileStream = new WavFileWriter(recording_dir+'/'+recording_fname, {
       sampleRate: 16000,
       bitDepth: 16,
