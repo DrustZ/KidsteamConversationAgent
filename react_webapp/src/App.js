@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-// to avoid callback still only use old state values
+// make the third argument of const [issameday, setIsSameDay, issamedayRef] available which is 
+// the most current state https://www.npmjs.com/package/react-usestateref
 import useState from 'react-usestateref'
 
 import OnboardingPage from './pages/OnboardingPage';
@@ -29,7 +30,8 @@ function App() {
   // whether the current recognition is finished
   const [recognizeFinished, setRecognizeFinished, recognizeFinishedRef] = useState(true);
   const [clickwhenrecognize, setClickWhenRecgnize, clickwhenrecognizeRef] = useState(false);
-  
+
+  // ========== Current Page status ================
   const [currentpage, setCurrentPage, currentpageRef] = useState(<OnboardingPage />);
   const [appState, setAppState, appStateRef] = useState('onboarding');
   var recodrder = new microphoneRecorder()
@@ -41,13 +43,12 @@ function App() {
       setAudioPlaying(true)
       // if after the response need to change the status
       // we change the current status
-      if (responses['changeStatus'].length > 0){
+      if (responses['changeStatus'].length > 0) {
         setAppState(responses['changeStatus'])
         console.log('app state changed to ', responses['changeStatus'])
       }
       speakResponses(responses['audios'], 0, () => {
-        if (appStateRef.current != 'finish')
-          { startRecording() }
+        if (appStateRef.current != 'finish') { startRecording() }
       })
     })
 
@@ -68,7 +69,7 @@ function App() {
   }, []);
 
   const userUpdated = (email) => {
-    email = email.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"_")
+    email = email.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "_")
     setUserEmail(email)
     if (email.lengh == 0) {
       // log out
@@ -77,20 +78,20 @@ function App() {
       console.log(`signed in as ${email}`)
       socket.emit('userLogin', email)
     }
-    setCurrentPage(<OnboardingPage 
-                    isloggedin={email.length > 0}
-                    onStartBtnClick={() => onStartBtnClick()}/>)
+    setCurrentPage(<OnboardingPage
+      isloggedin={email.length > 0}
+      onStartBtnClick={() => onStartBtnClick()} />)
   }
 
   const handleSpeechData = (data) => {
     var dataFinal = undefined || data.results[0].isFinal;
-    if (dataFinal){
+    if (dataFinal) {
       let response = data.results[0].alternatives[0].transcript
       currentResponse += ' ' + response
       console.log(currentResponse)
       setRecognizeFinished(true)
 
-      if (clickwhenrecognizeRef.current){
+      if (clickwhenrecognizeRef.current) {
         setClickWhenRecgnize(false)
         handleMicClick()
       }
@@ -101,7 +102,7 @@ function App() {
 
   const stopRecording = () => {
     recodrder.stopRecording()
-    socket.emit('userResponse', {'uid': userEmailRef.current, 'response':currentResponse});
+    socket.emit('userResponse', { 'uid': userEmailRef.current, 'response': currentResponse });
     setMicListening(false)
   }
 
@@ -114,9 +115,9 @@ function App() {
 
   const handleMicClick = () => {
     if (miclisteningRef.current) {
-      if (!recognizeFinishedRef.current) { 
+      if (!recognizeFinishedRef.current) {
         if (!clickwhenrecognizeRef.current) { setClickWhenRecgnize(true) }
-        return 
+        return
       } //return if the final recognition hasn't come
       stopRecording()
     } else {
@@ -130,15 +131,15 @@ function App() {
     currentResponse = ''
     switch (appState) {
       case "onbarding":
-        setCurrentPage(<OnboardingPage 
-                        isloggedin={userEmail.length > 0}
-                        onStartBtnClick={() => onStartBtnClick}/>)
+        setCurrentPage(<OnboardingPage
+          isloggedin={userEmail.length > 0}
+          onStartBtnClick={() => onStartBtnClick} />)
         break;
       case "reminder":
         setCurrentPage(<ReminderPage day={day} />)
         break;
       case "prompt":
-        setCurrentPage(<PromptPage day={day}/>)
+        setCurrentPage(<PromptPage day={day} />)
         break;
       case "interaction":
         setCurrentPage(<InteractionPage />)
@@ -160,13 +161,13 @@ function App() {
   // ======= Page callbacks ==============
   // user click start button to start conversation
   const onStartBtnClick = () => {
-    setShowMic(true)
+    setShowMic(true) // should this be false???????????????????????????????????????
     setAudioPlaying(true)
     speakResponses(greetingaudio['audios'], 0, () => {
       // change to prompt
       setAppState('prompt')
-      // we fake a user respones to start the real first conversation
-      socket.emit('userResponse', {'uid': userEmailRef.current, 'response':'start prompt'});
+      // we fake a user responses to start the real first conversation
+      socket.emit('userResponse', { 'uid': userEmailRef.current, 'response': 'start prompt' });
     })
 
     setAppState('reminder')
@@ -174,9 +175,10 @@ function App() {
 
   return (
     <div className="voiceapp">
-      {appState === 'onboarding' && <GoogleLogin userUpdated={userUpdated}/>}
+
       {currentpage}
-      {showmicRef.current && <Mic isListening={miclisteningRef.current} onMicClick={handleMicClick}/>}
+      {appState === 'onboarding' && <GoogleLogin userUpdated={userUpdated} />}
+      {showmicRef.current && <Mic isListening={miclisteningRef.current} onMicClick={handleMicClick} />}
     </div>
   );
 }
