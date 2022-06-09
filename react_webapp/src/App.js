@@ -50,7 +50,7 @@ function App() {
         setAppState(responses['changeStatus'])
         console.log('app state changed to ', responses['changeStatus'])
       }
-      speakResponses(responses['audios'], 0, () => {
+      speakResponses(responses, 0, () => {
         if (appStateRef.current != 'finish')
           { 
             startRecording() 
@@ -61,6 +61,7 @@ function App() {
     })
 
     socket.on('greetingResponse', (responses) => {
+      console.log(responses)
       greetingaudio = responses
     })
 
@@ -70,7 +71,7 @@ function App() {
 
     // for reminder - get the reminder audio
     socket.on('textaudio', (responses) => {
-      speakResponses(responses['audios'], 0, () => {
+      speakResponses(responses, 0, () => {
           console.log("resume!")
           resumeRecording()
           // set a timer for silence & remind
@@ -221,11 +222,12 @@ function App() {
   const onStartBtnClick = () => {
     setShowMic(true)
     setAudioPlaying(true)
-    speakResponses(greetingaudio['audios'], 0, () => {
+    speakResponses(greetingaudio, 0, () => {
       // change to prompt
       setAppState('prompt')
+      startRecording()
       // we fake a user respones to start the real first conversation
-      socket.emit('userResponse', {'uid': userEmailRef.current, 'response':'start prompt'});
+      // socket.emit('userResponse', {'uid': userEmailRef.current, 'response':'start prompt'});
     })
 
     setAppState('reminder')

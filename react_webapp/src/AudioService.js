@@ -16,7 +16,7 @@ socket.on('connect', function (data) {
 // Play given responses
 export var speakResponses = (responses, index, callback) => {
     var stop_saying = false
-    if (index+1 >= responses.length) {
+    if (index+1 >= responses['audios'].length) {
       stop_saying = true
     }
     function endOrCont(){
@@ -29,9 +29,21 @@ export var speakResponses = (responses, index, callback) => {
       }
     }
 
-    let blob = new Blob([responses[index]], { type: "audio/mp3" });
-    new Response(blob).arrayBuffer()
-          .then( abuf => {playOutput(abuf, endOrCont)});
+    let replytext = responses['replies'][index].trim()
+    
+    if (replytext === '[Q effect sound]') {
+      let audio = new Audio('audio/ding.mp3')
+      audio.addEventListener('ended', () => endOrCont());
+      audio.play()
+    } else if (replytext === '[pause]') {
+      let audio = new Audio('audio/2-seconds-of-silence.mp3')
+      audio.addEventListener('ended', () => endOrCont());
+      audio.play()
+    } else {
+      let blob = new Blob([responses['audios'][index]], { type: "audio/mp3" });
+      new Response(blob).arrayBuffer()
+            .then( abuf => {playOutput(abuf, endOrCont)});
+    }
 }
 
 // Play audio
