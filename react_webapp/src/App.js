@@ -36,6 +36,8 @@ function App() {
   const [appState, setAppState, appStateRef] = useState('onboarding');
   var recodrder = new microphoneRecorder()
 
+
+  // ========== Socket receive ================
   // init data 
   useEffect(() => {
     // configuration of the socketIO
@@ -68,6 +70,9 @@ function App() {
     })
   }, []);
 
+
+
+  // update email => username 
   const userUpdated = (email) => {
     email = email.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "_")
     setUserEmail(email)
@@ -161,11 +166,12 @@ function App() {
   // ======= Page callbacks ==============
   // user click start button to start conversation
   const onStartBtnClick = () => {
-    setShowMic(true) // should this be false???????????????????????????????????????
+    // should this be false???????????????????????????????????????
     setAudioPlaying(true)
     speakResponses(greetingaudio['audios'], 0, () => {
       // change to prompt
-      setAppState('prompt')
+      setAppState('prompt');
+      setShowMic(true)
       // we fake a user responses to start the real first conversation
       socket.emit('userResponse', { 'uid': userEmailRef.current, 'response': 'start prompt' });
     })
