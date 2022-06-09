@@ -180,3 +180,74 @@ h1 {
   top:50%;
   transform: translate(-50%, -50%);
 }
+
+/* Interaction Page CSS */
+.profiles {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 100px;
+}
+
+.pfp {
+  height: 200px;
+}
+
+.profile {
+  margin: 50px;
+  position: relative;
+}
+
+.active .inactive {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.active > .pfp {
+  transform: scale(1, 1);
+  translate: (-50%, -50%);
+  transition: all .5s ease-in-out;
+  /* height: 150px; */
+}
+
+.inactive > .pfp {
+  transform: scale(0.4, 0.4);
+  translate: (-50%, -50%);
+  transition: all .5s ease-in-out;
+  
+}
+
+.profile.active::after {
+  display: flex;
+  background: #A3FFC2;
+  border-radius: 300px;
+  height: 200px;
+  width: 200px;
+  animation: pulsate 2s ease-out;
+  animation-iteration-count: infinite;
+  opacity: 0.0;
+  content: "";
+  z-index: -1;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+@keyframes pulsate {
+  0% {
+    transform: scale(0.1, 0.1);
+    opacity: 0.0;
+  }
+  50% {
+    opacity: 1.0;
+  }
+  100% {
+    transform: scale(1.2, 1.2);
+    opacity: 0.0;
+  }
+}

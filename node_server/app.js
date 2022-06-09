@@ -99,6 +99,7 @@ io.on('connection', function (client) {
     // });
   });
 
+
   // client is sending a text for TTS speech audio
   client.on('speechText', (data) => {
     generateAudios([data['text']]).then(audios => {
