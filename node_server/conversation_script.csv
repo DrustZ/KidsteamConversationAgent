@@ -1,7 +1,7 @@
 ﻿Day,StateID,Speech,Response-Transition,Recovery
 1,greeting,"Welcome to superhero self-talk skill training, for the next five day, you are going to have a wonderful adventure with our superhero Zip! Let’s join him to save the world;
 Today is our first day joining our superhero Zip. Let’s see how he will lead us to a new adventure!",na-0,"Sorry, can you say again?"
-1,0,"If you are ready, say I am ready to start day one and press the button",dayone-finish,"Sorry, can you say again?"
+1,0,"If you are ready, say I am ready to start day one and press the button",dayone-1,"Sorry, can you say again?"
 1,1,"Great; let's join our superhero Zip now; And, first, I would love to get to know you a bit more! Can you tell me your name? ",na-2,"Sorry, can you tell me your name?"
 1,2,"Hi, it’s nice to meet you!; For the next several days, I am going to tell you a different story every day about a Superhero named Zip. During the story, I will ask you some questions. When you hear the sound; [Q effect sound]; a question is coming. Sometimes, when I ask you a question, I will ask you to talk about it with your sibling. Now let’s start; [Q effect sound]; have you ever faced any challenges, like being picked on, failing a quiz, or getting injured? You can share the experience with me if you have; you can answer ""not sure"" if you cannot think of one right now.",na-3,"Sorry, I did not catch that. Can you say again?"
 1,3,"Thanks for sharing that with me! Today we are going to talk about how to deal with challenges using your powerful superhero skill, called superhero self-talk! It is called superhero self-talk that can help you deal with challenges and fix problems!; 

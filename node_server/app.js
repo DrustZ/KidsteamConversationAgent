@@ -8,6 +8,7 @@ const utils = require('./util');
 const DialogManager = require('./conversation').DialogManager;
 
 const fs = require('fs');
+const https = require('https')
 const express = require('express'); // const bodyParser = require('body-parser'); // const path = require('path');
 const environmentVars = require('dotenv').config();
 const WavFileWriter = require('wav').FileWriter;
@@ -21,10 +22,24 @@ const textToSpeech = require('@google-cloud/text-to-speech');
 const ttsclient = new textToSpeech.TextToSpeechClient();
 
 const app = express();
-const port = process.env.PORT || 1337;
-const server = require('http').createServer(app);
+app.get('/', (req, res) => {
+  res.send('Hello HTTPS!')
+})
 
-const io = require('socket.io')(server);
+const port = process.env.PORT || 1337;
+const server = https
+.createServer(
+  {
+    key: fs.readFileSync('./ssl_keys/privkey.pem'),
+    cert: fs.readFileSync('./ssl_keys/fullchain.pem'),
+    // ca: fs.readFileSync('./ssl_keys/chain.pem'),
+  },
+  app
+)
+
+const io = require('socket.io')(server, {
+  rejectUnauthorized: false 
+});
 
 const recording_dir = './recordings'
 const text_dir = './transcriptions'
@@ -269,7 +284,7 @@ const request = {
 
 // =========================== START SERVER ================================ //
 
-server.listen(port, '127.0.0.1', function () {
+server.listen(port, function () {
   //http listen, to make socket work
   // app.address = "127.0.0.1";
   console.log('Server started on port:' + port);

@@ -108,7 +108,7 @@ module.exports = {
                 }
 
                 let response = script_states[this.day][this.status][speech_key]
-                console.log(`Uinput: ${userinput} \t Response: ${response}`)
+                // console.log(`Uinput: ${userinput} \t Response: ${response}`)
                 return response
             } catch (e) {
                 console.log(e) 

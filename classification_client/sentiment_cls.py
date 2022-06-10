@@ -1,7 +1,5 @@
-from pytest import console_main
 import socketio
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
-import pandas as pd
 
 model = AutoModelForSequenceClassification.from_pretrained('distilbert-base-uncased-finetuned-sst-2-english')
 tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
