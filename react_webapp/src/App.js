@@ -88,7 +88,7 @@ function App() {
   }, []);
 
   const userUpdated = (email) => {
-    email = email.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"_")
+    email = email.trim().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"_")
     setUserEmail(email)
     if (email.lengh == 0) {
       // log out
