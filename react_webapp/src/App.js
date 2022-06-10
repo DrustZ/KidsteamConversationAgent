@@ -14,8 +14,9 @@ import { microphoneRecorder, socket, speakResponses } from './AudioService'
 var currentResponse = ''
 var greetingaudio = null
 
-var silentTime = 6000 // 6 secs
-var timeInterval;
+var silentTime = 8000 // 8 secs
+var timeInterval_short;
+var timeInterval_long;
 var currentSilence = 0; // max silentces = 2
 
 var recodrder = new microphoneRecorder()
@@ -55,7 +56,7 @@ function App() {
           { 
             startRecording() 
             // set a timer for silence & remind
-            timeInterval = initTimer()
+            initTimer()
           }
       })
     })
@@ -71,11 +72,10 @@ function App() {
 
     // for reminder - get the reminder audio
     socket.on('textaudio', (responses) => {
+      if (audioplayingRef.current) { return }
+
       speakResponses(responses, 0, () => {
-          console.log("resume!")
           resumeRecording()
-          // set a timer for silence & remind
-          timeInterval = initTimer()
       })
     })
 
@@ -105,7 +105,8 @@ function App() {
   const handleSpeechData = (data) => {
     // reset timer every time we get speech
     currentSilence = 0 
-    clearTimeout(timeInterval)
+    clearTimeout(timeInterval_short)
+    clearTimeout(timeInterval_long)
 
     var dataFinal = undefined || data.results[0].isFinal;
     if (dataFinal){
@@ -118,7 +119,7 @@ function App() {
         setClickWhenRecgnize(false)
         handleMicClick()
       } else {
-        timeInterval = initTimer()
+        initTimer()
       }
     } else if (dataFinal == false) {
       setRecognizeFinished(false)
@@ -126,22 +127,33 @@ function App() {
   } 
 
   const initTimer = () => {
-    clearTimeout(timeInterval)
-    return setInterval(function() {
-      if (currentSilence == 0) {
+    console.log('initTimer here')
+    clearTimeout(timeInterval_short)
+    clearTimeout(timeInterval_long)
+    currentSilence = 0
+    if (audioplayingRef.current) return
+
+    timeInterval_short = setTimeout(function() {
+      if (currentSilence === 0) {
         // play reminder
-        pauseRecording()
         console.log('playing first reminder')
-        socket.emit('speechText', {'text': 'I did not hear anything .'})
+        if (audioplayingRef.current) { clearTimeout(timeInterval_long); return }
+        socket.emit('speechText', {'text': 'If you finish, please click the button.'})
         currentSilence += 1
-      } else {
-        // play default go next message
+        pauseRecording()
+      }
+    }, silentTime);
+
+    timeInterval_long = setTimeout(() => {
+      if (currentSilence === 1) {
         console.log('playing default go')
+        if (audioplayingRef.current) { return }
+        // play default go next message
         // force stop microphone
         stopRecording()
         currentSilence = 0
       }
-    }, silentTime); 
+    }, silentTime*2)
   }
 
   const resumeRecording = () => {
@@ -220,17 +232,15 @@ function App() {
   // ======= Page callbacks ==============
   // user click start button to start conversation
   const onStartBtnClick = () => {
-    setShowMic(true)
     setAudioPlaying(true)
+    setAppState('reminder')
     speakResponses(greetingaudio, 0, () => {
       // change to prompt
       setAppState('prompt')
-      startRecording()
+      setShowMic(true)
       // we fake a user respones to start the real first conversation
-      // socket.emit('userResponse', {'uid': userEmailRef.current, 'response':'start prompt'});
+      socket.emit('userResponse', {'uid': userEmailRef.current, 'response':'start prompt'});
     })
-
-    setAppState('reminder')
   }
 
   return (

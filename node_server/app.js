@@ -62,16 +62,13 @@ io.on('connection', function (client) {
     }
   });
 
-  client.on('messages', function (data) {
-    client.emit('broad', data);
-  });
-
   client.on('userLogin', function (cid) {
     clientID = cid;
     console.log('get cid ', clientID)
     // clean all cached recordings
     utils.deleteDirFilesWithPrefix(cid, recording_dir+'/')
     utils.deleteDirFilesWithPrefix(cid, text_dir+'/')
+
     utils.getDayOfUser(cid, (user_day, same_day) => {
       day = user_day
       sameday = same_day
@@ -92,7 +89,6 @@ io.on('connection', function (client) {
     //   "get_sentiment", data['text'], (sentdata) => {
       
       let res = getResponses(data)
-      
       generateAudios(res[0]).then(audios => {
         client.emit('assistantResponse', {'audios': audios, 'replies': res[0], 'changeStatus': res[1]})
       })
@@ -238,6 +234,7 @@ async function generateAudio(text) {
   return response.audioContent
 }
 
+// texts = ['text1', 'text2']
 async function generateAudios(texts) {
   let audios = []
   for (let text of texts){
