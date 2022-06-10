@@ -53,6 +53,7 @@ export var playOutput = (arrayBuffer, callback) => {
   if (outputSource !== null) {
     outputSource.stop()
   }
+  console.log(audioContext)
   try {
       if(arrayBuffer.byteLength > 0){
         //   console.log(arrayBuffer.byteLength);

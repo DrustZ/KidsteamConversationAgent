@@ -129,7 +129,8 @@ io.on('connection', function (client) {
 
   client.on('startGoogleCloudStream', function (data) {
     startRecognitionStream(this);
-    console.log("start")
+    // console.log("start")
+    if (dm === undefined) {return}
     recording_fname = `${clientID}-day${day}-${dm.status}-${utils.getTimeStamp()}.wav`;
     outputFileStream = new WavFileWriter(recording_dir+'/'+recording_fname, {
       sampleRate: 16000,
@@ -144,6 +145,7 @@ io.on('connection', function (client) {
     }
     outputFileStream = null;
     stopRecognitionStream();
+    if (dm === undefined) {return}
     utils.uploadFileToS3NDelete(recording_dir+'/'+recording_fname, recording_fname)
   });
 
