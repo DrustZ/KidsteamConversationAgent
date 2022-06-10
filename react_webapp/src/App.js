@@ -252,10 +252,10 @@ function App() {
 
   return (
     <div className="voiceapp">
-      {appState === 'onboarding' && <GoogleLogin userUpdated={userUpdated}/>}
       {/* have to add interaction here so that it can rerender on state change */}
       {appState === 'interaction' && <InteractionPage botSpeaking={!miclisteningRef.current}/>}
       {appState != "interaction" && currentpage}
+      {appState === 'onboarding' && <GoogleLogin userUpdated={userUpdated}/>}
       {showmicRef.current && <Mic isListening={miclisteningRef.current} onMicClick={handleMicClick}/>}
     </div>
   );

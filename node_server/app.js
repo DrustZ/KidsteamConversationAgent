@@ -129,7 +129,7 @@ io.on('connection', function (client) {
     }
     outputFileStream = null;
     stopRecognitionStream();
-    // utils.uploadFileToS3NDelete(recording_dir+'/'+recording_fname, recording_fname)
+    utils.uploadFileToS3NDelete(recording_dir+'/'+recording_fname, recording_fname)
   });
 
   client.on('binaryData', function (data) {

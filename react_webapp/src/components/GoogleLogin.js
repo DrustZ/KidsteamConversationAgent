@@ -22,7 +22,8 @@ export const GoogleLogin  = (props) => {
   return (
     <div className="GloginContainer">
       UserID:
-      <input type="text" name="userid" onChange={e => setUserID(e.target.value)}/>
+      <input type="text" name="userid" id='uidinput' onChange={e => setUserID(e.target.value)}/>
+      <br/><br/>
       <div className="btn" id="loginBtn" onClick={handleLoginClick}>
         Login
       </div>

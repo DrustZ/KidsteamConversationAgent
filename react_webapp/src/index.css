@@ -71,9 +71,8 @@ h1 {
 }
 
 .GloginContainer {
-
+  font-size: 1.2em;
   text-align: center;
-
 }
 
 .btn {
@@ -292,6 +291,5 @@ h1 {
 }
 
 #loginBtn {
-
   margin: auto;
 }
