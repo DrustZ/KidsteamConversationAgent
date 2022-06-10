@@ -108,10 +108,10 @@ function uploadFileToS3NDelete(fileName, key) {
                 if (err) {
                     throw err;
                 }
-                console.log(`File uploaded successfully. ${data.Location}`);
+                // console.log(`File uploaded successfully. ${data.Location}`);
                 fs.unlink(fileName,function(err){
                     if(err) return console.log(err);
-                    console.log('file deleted successfully');
+                    // console.log('file deleted successfully');
                 });
             });
         });
