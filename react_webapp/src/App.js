@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-// to avoid callback still only use old state values
+// make the third argument of const [issameday, setIsSameDay, issamedayRef] available which is 
+// the most current state https://www.npmjs.com/package/react-usestateref
 import useState from 'react-usestateref'
 
 import OnboardingPage from './pages/OnboardingPage';
@@ -36,10 +37,13 @@ function App() {
   // whether the current recognition is finished
   const [recognizeFinished, setRecognizeFinished, recognizeFinishedRef] = useState(true);
   const [clickwhenrecognize, setClickWhenRecgnize, clickwhenrecognizeRef] = useState(false);
-  
+
+  // ========== Current Page status ================
   const [currentpage, setCurrentPage, currentpageRef] = useState(<OnboardingPage />);
   const [appState, setAppState, appStateRef] = useState('onboarding');
 
+
+  // ========== Socket receive ================
   // init data 
   useEffect(() => {
     // configuration of the socketIO
@@ -47,7 +51,7 @@ function App() {
       setAudioPlaying(true)
       // if after the response need to change the status
       // we change the current status
-      if (responses['changeStatus'].length > 0){
+      if (responses['changeStatus'].length > 0) {
         setAppState(responses['changeStatus'])
         console.log('app state changed to ', responses['changeStatus'])
       }
@@ -87,6 +91,9 @@ function App() {
     })
   }, []);
 
+
+
+  // update email => username 
   const userUpdated = (email) => {
     email = email.trim().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"_")
     setUserEmail(email)
@@ -97,9 +104,9 @@ function App() {
       console.log(`signed in as ${email}`)
       socket.emit('userLogin', email)
     }
-    setCurrentPage(<OnboardingPage 
-                    isloggedin={email.length > 0}
-                    onStartBtnClick={() => onStartBtnClick()}/>)
+    setCurrentPage(<OnboardingPage
+      isloggedin={email.length > 0}
+      onStartBtnClick={() => onStartBtnClick()} />)
   }
 
   const handleSpeechData = (data) => {
@@ -109,13 +116,13 @@ function App() {
     clearTimeout(timeInterval_long)
 
     var dataFinal = undefined || data.results[0].isFinal;
-    if (dataFinal){
+    if (dataFinal) {
       let response = data.results[0].alternatives[0].transcript
       currentResponse += ' ' + response
       console.log(currentResponse)
       setRecognizeFinished(true)
 
-      if (clickwhenrecognizeRef.current){
+      if (clickwhenrecognizeRef.current) {
         setClickWhenRecgnize(false)
         handleMicClick()
       } else {
@@ -186,9 +193,9 @@ function App() {
 
   const handleMicClick = () => {
     if (miclisteningRef.current) {
-      if (!recognizeFinishedRef.current) { 
+      if (!recognizeFinishedRef.current) {
         if (!clickwhenrecognizeRef.current) { setClickWhenRecgnize(true) }
-        return 
+        return
       } //return if the final recognition hasn't come
       stopRecording()
     } else {
@@ -202,15 +209,15 @@ function App() {
     currentResponse = ''
     switch (appState) {
       case "onbarding":
-        setCurrentPage(<OnboardingPage 
-                        isloggedin={userEmail.length > 0}
-                        onStartBtnClick={() => onStartBtnClick}/>)
+        setCurrentPage(<OnboardingPage
+          isloggedin={userEmail.length > 0}
+          onStartBtnClick={() => onStartBtnClick} />)
         break;
       case "reminder":
         setCurrentPage(<ReminderPage day={day} />)
         break;
       case "prompt":
-        setCurrentPage(<PromptPage day={day}/>)
+        setCurrentPage(<PromptPage day={day} />)
         break;
       case "interaction":
         setCurrentPage(<InteractionPage botSpeaking={!miclisteningRef.current}/>)
