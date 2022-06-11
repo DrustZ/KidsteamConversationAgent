@@ -6,7 +6,7 @@ export default function InteractionPage(props) {
     <main>
       <div className="profiles">
         <Avatar isSpeaking={props.botSpeaking} src="/img/s_profile.png" />
-        <Avatar isSpeaking={!props.botSpeaking} src="/img/k_profile.png" />
+        <Avatar isSpeaking={!props.botSpeaking} src="/img/kid_speaking.png" />
       </div>
 
     </main>
