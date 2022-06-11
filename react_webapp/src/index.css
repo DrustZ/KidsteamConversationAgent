@@ -93,6 +93,8 @@ h1 {
 }
 
 /* Mic Animations */
+
+
 .mic-box {
   position: absolute;
   margin-left: -75px;
@@ -192,12 +194,22 @@ h1 {
 }
 
 /* Interaction Page CSS */
+
+.button-press-reminder {
+  position: absolute;
+  text-align: center;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  bottom: 200px;
+
+}
+
 .profiles {
   display: flex;
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 100px;
+  margin-bottom: 50px;
 }
 
 .pfp {
@@ -215,18 +227,18 @@ h1 {
   justify-content: center;
 }
 
-.active > .pfp {
+.active>.pfp {
   transform: scale(1, 1);
   translate: (-50%, -50%);
   transition: all .5s ease-in-out;
   /* height: 150px; */
 }
 
-.inactive > .pfp {
+.inactive>.pfp {
   transform: scale(0.4, 0.4);
   translate: (-50%, -50%);
   transition: all .5s ease-in-out;
-  
+
 }
 
 .profile.active::after {
@@ -253,9 +265,11 @@ h1 {
     transform: scale(0.1, 0.1);
     opacity: 0.0;
   }
+
   50% {
     opacity: 1.0;
   }
+
   100% {
     transform: scale(1.2, 1.2);
     opacity: 0.0;
