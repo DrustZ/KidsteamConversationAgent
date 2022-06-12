@@ -94,7 +94,7 @@ function uploadFileToS3NDelete(fileName, key) {
         fs.readFile(fileName, (err, content) => {
             if (err) {
                 console.log(err)
-                throw(err)
+                return
             }
             // Setting up S3 upload parameters
             const params = {
@@ -106,7 +106,7 @@ function uploadFileToS3NDelete(fileName, key) {
             // Uploading files to the bucket
             s3.upload(params, function(err, data) {
                 if (err) {
-                    throw err;
+                    console.log(err)
                 }
                 console.log(`File uploaded successfully. ${data.Location}`);
                 fs.unlink(fileName,function(err){
@@ -142,7 +142,10 @@ function deleteDirFilesWithPrefix(prefix, dirPath) {
   
     // get all file names in directory
     fs.readdir(dirPath, (err, fileNames) => {
-      if (err) throw err;
+      if (err) {
+          console.log(err)
+          return
+      }
   
       // iterate through the found file names
       for (const name of fileNames) {
@@ -150,7 +153,10 @@ function deleteDirFilesWithPrefix(prefix, dirPath) {
         if (name.startsWith(prefix)) {
           // try to remove the file and log the result
           fs.unlink(dirPath+name, (err) => {
-            if (err) console.log(err);
+            if (err) {
+                console.log(err);
+                return
+            }
           });
         }
       }
