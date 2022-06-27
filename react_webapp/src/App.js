@@ -55,7 +55,7 @@ function App() {
         setAppState(responses['changeStatus'])
         console.log('app state changed to ', responses['changeStatus'])
       }
-      speakResponses(responses, 0, () => {
+      speakResponses(responses, () => {
         if (appStateRef.current != 'finish')
           { 
             startRecording() 
@@ -73,15 +73,6 @@ function App() {
     socket.on('speechData', function (data) {
       handleSpeechData(data)
     });
-
-    // for reminder - get the reminder audio
-    socket.on('textaudio', (responses) => {
-      if (audioplayingRef.current) { return }
-
-      speakResponses(responses, 0, () => {
-          resumeRecording()
-      })
-    })
 
     socket.on('userday', (data) => {
       //get the day of the user
@@ -145,9 +136,12 @@ function App() {
         // play reminder
         console.log('playing first reminder')
         if (audioplayingRef.current) { clearTimeout(timeInterval_long); return }
-        socket.emit('speechText', {'text': 'If you finish, please click the button.'})
+        
         currentSilence += 1
         pauseRecording()
+        speakResponses({'replies':'pressbutton'}, () => {
+          resumeRecording()
+        })
       }
     }, silentTime);
 
@@ -160,7 +154,7 @@ function App() {
         stopRecording()
         currentSilence = 0
       }
-    }, silentTime*2)
+    }, silentTime*2+15000)
   }
 
   const resumeRecording = () => {
@@ -241,7 +235,7 @@ function App() {
   const onStartBtnClick = () => {
     setAudioPlaying(true)
     setAppState('reminder')
-    speakResponses(greetingaudio, 0, () => {
+    speakResponses(greetingaudio, () => {
       // change to prompt
       setAppState('prompt')
       setShowMic(true)

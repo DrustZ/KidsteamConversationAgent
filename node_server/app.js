@@ -91,41 +91,41 @@ io.on('connection', function (client) {
       console.log('[day of user] ', day, sameday)
       client.emit('userday', {'day':day, 'sameday': same_day})
       // generate greeting audios
-      let greetings = dm.getGreetingResponse().split(';')
-      generateAudios(greetings).then(audios => {
-        client.emit('greetingResponse', 
-                    {'audios': audios, 'replies': greetings})
-      })
+      let greetings = dm.getGreetingResponse()
+      client.emit('greetingResponse', 
+                  {'replies': greetings})
     })
   })
 
   client.on('userResponse', function (data) {
-    // classification_client.emit(
-    //   "get_sentiment", data['text'], (sentdata) => {
-      
-      let res = getResponses(data)
-      generateAudios(res[0]).then(audios => {
-        client.emit('assistantResponse', {'audios': audios, 'replies': res[0], 'changeStatus': res[1]})
-      })
-    // });
+    let res = getResponses(data)
+    client.emit('assistantResponse', {'replies': res[0], 'changeStatus': res[1]})
   });
 
 
   // client is sending a text for TTS speech audio
   client.on('speechText', (data) => {
     generateAudios([data['text']]).then(audios => {
-      client.emit('textaudio', {'audios': audios, 'replies': [data['text']]})
+      client.emit('textaudio', {'audios': audios[0], 'replies': [data['text']]})
     })
+  })
+
+  client.on('disconnect', () => {
+    closeStreamNUpload()
   })
 
   // client is leaving the page
   client.on('clientleave', (data) => {
+    closeStreamNUpload()
+  })
+
+  function closeStreamNUpload(){
     if (textloggerStream) {
       textloggerStream.end()
       textloggerStream = null
     }
     utils.uploadFileToS3NDelete(text_dir+'/'+log_fname, log_fname)
-  })
+  }
 
   client.on('startGoogleCloudStream', function (data) {
     startRecognitionStream(this);

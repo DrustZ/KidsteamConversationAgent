@@ -14,36 +14,13 @@ socket.on('connect', function (data) {
 
 //================= SPEECH CONFIG =================
 // Play given responses
-export var speakResponses = (responses, index, callback) => {
-    var stop_saying = false
-    if (index+1 >= responses['audios'].length) {
-      stop_saying = true
-    }
-    function endOrCont(){
-      if (stop_saying && callback){
-          callback()
-      } else {
-        setTimeout(function () {
-          speakResponses(responses, index+1, callback)
-        }, 1200);
-      }
-    }
-
-    let replytext = responses['replies'][index].trim()
+export var speakResponses = (responses, callback) => {
+    let replyTag = responses['replies']
+    let url = `https://superheroaudios.s3.us-west-2.amazonaws.com/Superhero_synthetic_day1_audio/${replyTag}.mp3`
+    let audio = new Audio(url)
+    audio.addEventListener('ended', () => callback());
+    audio.play()
     
-    if (replytext === '[Q effect sound]') {
-      let audio = new Audio('audio/ding.mp3')
-      audio.addEventListener('ended', () => endOrCont());
-      audio.play()
-    } else if (replytext === '[pause]') {
-      let audio = new Audio('audio/2-seconds-of-silence.mp3')
-      audio.addEventListener('ended', () => endOrCont());
-      audio.play()
-    } else {
-      let blob = new Blob([responses['audios'][index]], { type: "audio/mp3" });
-      new Response(blob).arrayBuffer()
-            .then( abuf => {playOutput(abuf, endOrCont)});
-    }
 }
 
 // Play audio

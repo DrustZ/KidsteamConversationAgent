@@ -41,7 +41,7 @@ module.exports = {
         this.status = 'greeting'
         this.getGreetingResponse = () => {
             try {
-                let response = script_states[this.day]['greeting']['Speech']
+                let response = script_states[this.day]['greeting']['Tag']
                 return response
             } catch (e) {
                 console.log(e)
@@ -102,11 +102,11 @@ module.exports = {
                 }
 
                 this.status = next_state
-                let speech_key = 'Speech'
+                let speech_key = 'Tag'
                 if (!response_succeed) {
                     speech_key = 'Recovery'
                 }
-
+ 
                 let response = script_states[this.day][this.status][speech_key]
                 // console.log(`Uinput: ${userinput} \t Response: ${response}`)
                 return response
