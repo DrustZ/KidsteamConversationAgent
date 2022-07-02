@@ -16,7 +16,7 @@ socket.on('connect', function (data) {
 // Play given responses
 export var speakResponses = (responses, callback) => {
     let replyTag = responses['replies']
-    let url = `https://superheroaudios.s3.us-west-2.amazonaws.com/Superhero_synthetic_day1_audio/${replyTag}.mp3`
+    let url = `https://superheroaudios.s3.us-west-2.amazonaws.com/${replyTag}.mp3`; // `https://superheroaudios.s3.us-west-2.amazonaws.com/Superhero_synthetic_day1_audio/${replyTag}.mp3`;
     let audio = new Audio(url)
     audio.addEventListener('ended', () => callback());
     audio.play()
