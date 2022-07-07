@@ -31,7 +31,7 @@ const server = https.createServer(
   {
     key: fs.readFileSync('./ssl_keys/privkey.pem'),
     cert: fs.readFileSync('./ssl_keys/fullchain.pem'),
-    // // remember to commentout the below code
+    // // remember to commentout the below code. Do not use the code below. 
     // ca: fs.readFileSync('./ssl_keys/chain.pem'),
   },
   app
