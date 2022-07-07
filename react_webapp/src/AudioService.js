@@ -4,7 +4,7 @@
 //  Contact: v@vinzenzaubry.com
 import socketIOClient from "socket.io-client";
 
-const ENDPOINT = "http://localhost:1337"; //"https://is-kids.ischool.uw.edu:1337";
+const ENDPOINT = //"http://localhost:1337"; "https://is-kids.ischool.uw.edu:1337";
 export const socket = socketIOClient(ENDPOINT, { transports: ["websocket"] });
 socket.on("connect", function (data) {
   console.log("connected to socket");
