@@ -8,7 +8,7 @@ const utils = require("./util");
 const DialogManager = require("./conversation").DialogManager;
 
 const fs = require("fs");
-const https = require("http"s); //require("http"); 
+const https = require("https"); //require("http"); 
 const express = require("express"); // const bodyParser = require('body-parser'); // const path = require('path');
 const environmentVars = require("dotenv").config();
 const WavFileWriter = require("wav").FileWriter;
