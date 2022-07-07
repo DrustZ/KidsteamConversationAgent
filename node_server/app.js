@@ -29,9 +29,9 @@ app.get("/", (req, res) => {
 const port = process.env.PORT || 1337;
 const server = https.createServer(
   {
-    // key: fs.readFileSync('./ssl_keys/privkey.pem'),
-    // cert: fs.readFileSync('./ssl_keys/fullchain.pem'),
-    // ca: fs.readFileSync('./ssl_keys/chain.pem'),
+    key: fs.readFileSync('./ssl_keys/privkey.pem'),
+    cert: fs.readFileSync('./ssl_keys/fullchain.pem'),
+    ca: fs.readFileSync('./ssl_keys/chain.pem'),
   },
   app
 );
