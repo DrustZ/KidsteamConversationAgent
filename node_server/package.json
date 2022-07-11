@@ -4,7 +4,9 @@
   "description": "Google Cloud Speech Playground with node.js and socket.io.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,5 +22,8 @@
     "react-google-login": "^5.2.2",
     "socket.io": "^3.1.1",
     "wav": "^1.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
   }
 }

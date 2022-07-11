@@ -49,18 +49,24 @@ We have finished today’s story. I have some questions for you to reflect and d
 1,7,1_7,"Great, hope you learn how to do self-talk now. 
 Before we end our day’s story. I want to leave you a take home question: 
 [Q effect sound] “When you feel sad after you failed a math examination, how can you use positive self-talk to help yourself?”
-Think about this question, and I will ask you to share with me during tomorrow's story time.",na-finish,recovery
-1,finish,1_f,Thanks for attending today’s story and learning self-talk skill. Come back tomorrow to learn more about what happened to our Superhero Zip! See you tomorrow! ,na-finish,recovery
+Think about this question, and I will ask you to share with me during tomorrow's story time. ",,recovery
+1,finish,1_f,Thanks for attending today’s story and learning self-talk skill. Come back tomorrow to learn more about what happened to our Superhero Zip!  You can close the window now. See you tomorrow!,na-finish,recovery
 2,greeting,2_g,Thanks for coming back!  Today is day two with our superhero Zip. Let’s  see how he will lead us to a new adventure!,na-0,recovery
-2,0,2_0,"If you are ready, say I am ready to start day two and press the button.",dayone-1,recovery
+2,0,2_0,"If you are ready, say I am ready to start day two and press the button.",na-1,recovery
 2,1,2_1,"Great, welcome back to Superhero Skill! Yesterday, we learned about self-talk and why positive self-talk is so important. Before we begin today’s story, let’s see what you remember! 
-[Q Sound Effect] “What were the four letters that Zip taught Lily, and what do they stand for?” Press the button after you have finished sharing to continue. ",na-2,recovery
-2,2,2_2,"“Thanks for sharing! Now, let’s move on to hear how superhero helped the Wizard Acanemy student Lucy”
+[Q Sound Effect] “What were the four letters that Zip taught Lily, and what do they stand for?” Press the button after you have finished sharing to continue. ",na-2; no-2_1_1 ,recovery
+2,2_1_1,2_1_1_testing(audio),This is day two testing file. Press the button when you have done speaking. ,na-2,recovery
+2,2,2_2,"Great! H-T-F-D for happens, think, feel, do. No matter what happens to you, you can use self-talk to decide what you think about the situation, which will affect how you feel and what you decide to do.
+Today, we are going to hear a story about a young Wizard named Lucy. Let’s follow along as she learns to make new potions and see how Zip helps her, too!
+[Q effect sound] Before we start our new journey with Lucy, can you tell me about a time when you asked for help?” Press the button after you have finished sharing to continue. 
+
+",na-3,recovery
+,3,2_3,"“Thanks for sharing! Now, let’s move on to hear how superhero helped the Wizard Acanemy student Lucy”
 
 “Every year at the Wizarding Prepatory Academy, there was a potion-making exam that the junior Wizards must take to be able to move onto the next level of potion master training. Every junior Wizard must be able to create a potion that turns a frog into a bouquet of beautiful flowers. But Lucy, a junior Wizard at the academy, was struggling to master potion-making. She had been practicing for weeks; she had read every potion book she could find and followed the directions perfectly. But every time she combined the ingredients in her cauldron, cast the spell from her spellbook, and tested the potion on a frog, she turned the frog into something horrible like a stinky fish, a fat worm, or ugly rat! ”
 
-[Q effect sound] [Stroryline Q] If you were Lucy, what would you do to try and master your potion skills? Discuss with each other. Press the button after you have finished discussion to continue the story. ",na-3,recovery
-2,3,2_3,"“Good thinking. Let’s see if that’s what Lucy does!” 
+[Q effect sound] [Stroryline Q] If you were Lucy, what would you do to try and master your potion skills? Discuss with each other. Press the button after you have finished discussion to continue the story. ",na-4,
+2,4,2_4,"“Good thinking. Let’s see if that’s what Lucy does!” 
 “A few days before the exam, Lucy was practicing her potion skills. After hours of practice with no success, she concentrated as hard as she could, carefully measured her ingredients, and turned the frog into… a bar of ice cream! She felt tears of frustration welling up in her eyes. She told herself, ‘This is hopeless, I just have to accept that I am terrible at making potions. I will never get this right and should just give up!’ Just as she was about to go back to her dormitory and cry, she heard a loud “Whoosh” and suddenly, a mini superhero Zip was standing on her right shoulder!”
 
 Zip said, “Hey Lucy, what do you feel right now?” Lucy replied, “Whoa, who are you?” Lucy exclaimed. “I don’t know how you knew to ask, but I feel SO frustrated. I have tried to make this potion work so many times, and I just can’t. I am starting to wonder if I am good enough to be a wizard at all.” Zip explained that self-talk could help Lucy decide what to think about the things that happen to her, that those thoughts would influence her feelings, and that how she feels will help guide her in deciding what to do. 
@@ -75,8 +81,8 @@ Lucy thought to herself for a moment and then said, “I guess… I’m happy be
 Zip laughed and said, “Well, that’s probably true, but let’s see if you can think of something more supportive than that. What can you tell yourself that can help you feel ready to move forward and help you know what to do next?”
 Lucy thought some more, then said “Ok, how about this one: ‘It’s great that I’m trying hard and it’s ok not to succeed at first. Lots of new wizards even need help from a teacher when they’re first starting out.”
 “Wow!” said Zip, “That is some seriously magical self-talk! And it sounds like you’re already starting to think about what to do next. Here’s an idea: what do you think about asking someone for help?”
-[Q effect sound] [SEL Question]: “What do you think about Zip’s idea? Press the button after you have finished sharing to continue. ",na-4,recovery
-2,4,2_4,"“Thanksfor sharing, let’s see what Lucy thinks.”
+[Q effect sound] [SEL Question]: “What do you think about Zip’s idea? Press the button after you have finished sharing to continue. ",na-5,recovery
+2,5,2_5,"“Thanksfor sharing, let’s see what Lucy thinks.”
 
 Lucy told Zip that she was embarrassed to ask for help. She worried the professors or her friends would think she was not smart if she couldn’t learn it all on her own.
 
@@ -84,17 +90,19 @@ Zip nodded with understanding. “He said, “sometimes negative thoughts and fe
 
 Instead, try talking to yourself with all of the compassion and support you can muster. What can you say that will help you feel prepared to keep going? Now, what was that you said earlier about a lot of new wizards needing to ask for help?” Zip winked at Lucy and said, “I think you were just about to say that asking for help not a sign of failure or a weakness, it takes a lot of courage and is an important part of life.”
 
-Lucy kept practicing her self-talk and by the next day, she had worked up the courage to ask  her potions professor, [add name?], for help. Her professor watched her try out the spell and pointed out three key mistakes along the way. Once Lucy knew what to focus on, her hard work started to pay off. She still needed practice, but after accidentally making herself a few frustrating–but delicious–ice cream bars, Lucy finally created a beautiful bouquet of flowers!
+Lucy kept practicing her self-talk and by the next day, she had worked up the courage to ask  her potions professor, Danielle, for help. Her professor watched her try out the spell and pointed out three key mistakes along the way. Once Lucy knew what to focus on, her hard work started to pay off. She still needed practice, but after accidentally making herself a few frustrating–but delicious–ice cream bars, Lucy finally created a beautiful bouquet of flowers!
 
-[Q effect sound] [SEL Question]: How do you think Lucy felt after her professor helped her? Press the button after you have finished sharing to continue. ",na-5,recovery
-2,5,2_5,"“Good guess. After finally passing her potion exam, Lucy felt glad she had asked for help and proud of accomplishing something new that had been difficult for her. But the thing Lucy felt most proud of was talking herself into trying again and asking for help. Supportive self-talk gave her the boost she needed to feel better, even when things weren’t going well, and think of something productive to try next.”",na-6,recovery
-2,6,2_6,"We have finished today’s story. I have some questions for you to reflect and discuss with your siblings. First question,
+[Q effect sound] [SEL Question]: How do you think Lucy felt after her professor helped her? Press the button after you have finished sharing to continue. ",na-6,recovery
+2,6,2_6,"“Good guess. After finally passing her potion exam, Lucy felt glad she had asked for help and proud of accomplishing something new that had been difficult for her. But the thing Lucy felt most proud of was talking herself into trying again and asking for help. Supportive self-talk gave her the boost she needed to feel better, even when things weren’t going well, and think of something productive to try next.”
+
+We have finished today’s story. I have some questions for you to reflect and discuss with your siblings. First question,
 [Q effect sound] [SEL Question]: “Now we’ve heard Lily tell herself to be patient with her sister, Monica tell herself to take the hard step of apologizing after making a mistake, and Lucy telling herself that she should keep trying, even when the task at hand seemed impossible. Think of a time when you needed help.  How did you feel after you asked for help? Press the button after you have finished sharing to continue. ",na-7,recovery
 2,7,2_7,"“Hopefully you had a good discussion about the times you have asked for help. Sometimes, you will come across problems you cannot solve on your own, so asking for help is a really important skill to have. It is nothing to be embarrassed about. By reaching out to someone you trust for help, you can learn to speak up for yourself. Make sure to thank them for helping you afterward!”
 
 “Thanks for listening to today’s story and learning a new skill of asking for help. Like yesterday, we will have a take home question that I will ask one of you to answer before tomorrow’s story! The question is: “What are some reasons why people should not be afraid to ask for help?”
-“Remember to come back tomorrow and say “launch superhero skill” and I will tell you another story of our superhero Zip. See you tomorrow!”",na-finish,recovery
-2,finish,2_f,Thanks for attending today’s story and learning self-talk skill. Come back tomorrow to learn more about what happened to our Superhero Zip! See you tomorrow! ,na-finish,recovery
+“Remember to come back tomorrow by login your username and I will tell you another story of our superhero Zip.  Come back tomorrow to learn more about what happened to our Superhero Zip!  You can close the window now. See you tomorrow!",,recovery
+2,finish,2_f,Thanks for attending today’s story and learning self-talk skill. Come back tomorrow to learn more about what happened to our Superhero Zip!  You can close the window now. See you tomorrow!,na-finish,recovery
+,,,,,
 3,greeting,3_g,Thanks for coming back!  Today is day three with our superhero Zip. Let’s see how he will lead us to a new adventure!,na-0,recovery
 3,0,3_0,"If you are ready, say I am ready to start day three and press the button.",dayone-1,recovery
 3,1,3_1,"Great! Welcome back to our superhero self-talk story. Welcome back! I hope you’re ready for another story! As you may remember, yesterday,our great superhero Zip encouraged Lucy, a young wizard, to use self-talk when she was struggling to master a challenging potion-making task and about to give up. ask for help when she had trouble with making a potion. Even though Lucy felt embarrassed to ask for help at first, she learned that everyone asks for help at some point and it is a great way to learn.
