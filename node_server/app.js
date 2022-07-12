@@ -8,7 +8,7 @@ const utils = require("./util");
 const DialogManager = require("./conversation").DialogManager;
 
 const fs = require("fs");
-const https = require("http");
+const https = require("http"); // require("https") // for https for server side
 const express = require("express"); // const bodyParser = require('body-parser'); // const path = require('path');
 const environmentVars = require("dotenv").config();
 const WavFileWriter = require("wav").FileWriter;
@@ -22,11 +22,15 @@ const textToSpeech = require("@google-cloud/text-to-speech");
 const ttsclient = new textToSpeech.TextToSpeechClient();
 
 const app = express();
+
 app.get("/", (req, res) => {
   res.send("Hello HTTPS!");
 });
 
+// port is called environment variable; process is a global variable
 const port = process.env.PORT || 1337;
+
+// create a server
 const server = https.createServer(
   {
     // key: fs.readFileSync('./ssl_keys/privkey.pem'),
@@ -55,6 +59,7 @@ const maxDay = 5;
 var classification_client;
 
 // =========================== SOCKET.IO ================================ //
+// connection means someone is on our url; client variable is our socket variable
 io.on("connection", function (client) {
   console.log("Client Connected to server");
   // file streams
@@ -86,6 +91,7 @@ io.on("connection", function (client) {
     utils.getDayOfUser(cid, (user_day, same_day) => {
       day = user_day;
       sameday = same_day;
+      console.log("[[" + cid + " day:" + day + " sameday:" + sameday + "]]");
       dm = new DialogManager(day);
       console.log("[day of user] ", day, sameday);
       client.emit("userday", { day: day, sameday: same_day });
@@ -190,11 +196,17 @@ io.on("connection", function (client) {
       textloggerStream.write(`user:\t${data[`response`]}\n`);
       textloggerStream.write(`da:\t${dmresponse}\n`);
 
-      console.log("status: ", dm.status);
+      // when transcript status = "1", upload the information to DynamoDB
+      if (dm.status === "1") {
+        //conversation started, log user name.
+        utils.finishConversation(clientID, day);
+      }
+
+      // console.log("status: ", dm.status, "clientID: " + clientID, "day: ", day);
       if (dm.status === "finish") {
         //conversation finished.
         changeStatus = "finish";
-        utils.finishConversation(clientID, day);
+        // utils.finishConversation(clientID, day);
         textloggerStream.write(`FINISH\n`);
         textloggerStream.end();
         textloggerStream = null;
@@ -297,5 +309,5 @@ const request = {
 server.listen(port, function () {
   //http listen, to make socket work
   // app.address = "127.0.0.1";
-  console.log("Server started on port:" + port);
+  console.log("Console logged: Server started on port:" + port);
 });
