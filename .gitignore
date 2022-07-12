@@ -27,3 +27,5 @@ yarn-debug.log*
 yarn-error.log*
 node_server/.env
 node_server/.gcloudignore
+
+/node_server/ssl_keys/*
