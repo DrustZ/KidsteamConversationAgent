@@ -15,7 +15,7 @@ import { microphoneRecorder, socket, speakResponses } from './AudioService'
 var currentResponse = ''
 var greetingaudio = null
 
-var silentTime = 8000 // 8 secs
+var silentTime = 10990 //11 secs
 var timeInterval_short;
 var timeInterval_long;
 var currentSilence = 0; // max silentces = 2

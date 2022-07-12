@@ -4,9 +4,12 @@
 //  Created by Vinzenz Aubry for sansho 24.01.17
 //  Feel free to improve!
 //	Contact: v@vinzenzaubry.com
+
+// require created modules  
 const utils = require("./util");
 const DialogManager = require("./conversation").DialogManager;
 
+// require preinstalled modules
 const fs = require("fs");
 const https = require("https"); //require("http"); 
 const express = require("express"); // const bodyParser = require('body-parser'); // const path = require('path');
@@ -191,6 +194,12 @@ io.on("connection", function (client) {
       textloggerStream.write(`user:\t${data[`response`]}\n`);
       textloggerStream.write(`da:\t${dmresponse}\n`);
 
+      // when transcript status = "1", upload the information to DynamoDB
+      if (dm.status === "1") {
+        //conversation started, log user name.
+        utils.finishConversation(clientID, day);
+      }
+      
       console.log("status: ", dm.status);
       if (dm.status === "finish") {
         //conversation finished.
