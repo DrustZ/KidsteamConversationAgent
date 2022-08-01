@@ -200,11 +200,10 @@ function App() {
     recodrder.startRecording(userEmailRef.current);
     setMicListening(true);
   };
-
   const handleMicClick = () => {
     if (miclisteningRef.current) {
-      // recognition is not finished == true
       if (!recognizeFinishedRef.current) {
+        // recognition is not finished == true
         // if click when recognize === false
         if (!clickwhenrecognizeRef.current) {
           setClickWhenRecgnize(true);
