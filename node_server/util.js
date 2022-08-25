@@ -72,7 +72,9 @@ function getDayOfUser(user_id, callback) {
     .promise()
     .then((data) => {
       console.log([data]);
-      if (data.Item !== undefined) {
+      if (user_id == "test") {
+        callback(9, false);
+      } else if (data.Item !== undefined) {
         let lastrecord = getLastRecord(data.Item.user_history);
         // console.log(["lastrecord " + lastrecord]);
         let lastday = Number(lastrecord[0]);
@@ -87,6 +89,7 @@ function getDayOfUser(user_id, callback) {
         let today = getTimeStamp((onlydate = true));
 
         console.log(lastdate, today, lastday);
+
         if (today === lastdate) {
           callback(lastday, true); //same day
         } else {

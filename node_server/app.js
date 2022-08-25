@@ -196,8 +196,8 @@ io.on("connection", function (client) {
       textloggerStream.write(`user:\t${data[`response`]}\n`);
       textloggerStream.write(`da:\t${dmresponse}\n`);
 
-      // when transcript status = "1", upload the information to DynamoDB
-      if (dm.status === "1") {
+      // when transcript status = "4", upload the information to DynamoDB
+      if (dm.status === "4") {
         //conversation started, log user name.
         utils.finishConversation(clientID, day);
       }
