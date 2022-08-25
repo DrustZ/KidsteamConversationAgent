@@ -82,7 +82,7 @@ io.on("connection", function (client) {
 
   client.on("userLogin", function (cid) {
     clientID = cid;
-    console.log("get cid ", clientID);
+    // console.log("get cid ", clientID);
     // clean all cached recordings
     utils.deleteDirFilesWithPrefix(cid, recording_dir + "/");
     utils.deleteDirFilesWithPrefix(cid, text_dir + "/");
@@ -91,7 +91,7 @@ io.on("connection", function (client) {
       day = user_day;
       sameday = same_day;
       dm = new DialogManager(day);
-      console.log("[day of user] ", day, sameday);
+      // console.log("[day of user] ", day, sameday);
       client.emit("userday", { day: day, sameday: same_day });
       // generate greeting audios
       let greetings = dm.getGreetingResponse();
@@ -194,13 +194,13 @@ io.on("connection", function (client) {
       textloggerStream.write(`user:\t${data[`response`]}\n`);
       textloggerStream.write(`da:\t${dmresponse}\n`);
 
-      // when transcript status = "1", upload the information to DynamoDB
-      if (dm.status === "1") {
+      // when transcript status = "4", upload the information to DynamoDB
+      if (dm.status === "4") {
         //conversation started, log user name.
         utils.finishConversation(clientID, day);
       }
       
-      console.log("status: ", dm.status);
+      // console.log("status: ", dm.status);
       if (dm.status === "finish") {
         //conversation finished.
         changeStatus = "finish";

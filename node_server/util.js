@@ -68,21 +68,40 @@ function getDayOfUser(user_id, callback) {
     })
     .promise()
     .then( (data) => {
-            if (data.Item !== undefined) {
-                let lastrecord = getLastRecord(data.Item.user_history)
-                let lastday = Number(lastrecord[0])
-                let lastdate = lastrecord[1].split('-')[0] //only get date without hour
-                let today = getTimeStamp(onlydate=true)
-                console.log(lastdate, today, lastday)
-                if (today === lastdate) {
-                    callback(lastday, true) //same day
-                } else {
-                    callback(lastday+1, false)
-                }
-            }
-            else {
-                callback(1, false)
-            }
+        console.log([data]);
+        if (user_id == "test") {
+          callback(9, false);
+        } else if (data.Item !== undefined) {
+          let lastrecord = getLastRecord(data.Item.user_history);
+          // console.log(["lastrecord " + lastrecord]);
+          let lastday = Number(lastrecord[0]);
+          // console.log([
+          //   "[[ " +
+          //     "lastday: " +
+          //     lastday +
+          //     "]]" +
+          //     "- utility_function_getDayOfUser",
+          // ]);
+          let lastdate = lastrecord[1].split("-")[0]; //only get date without hour
+          let today = getTimeStamp((onlydate = true));
+  
+          console.log(lastdate, today, lastday);
+  
+          if (today === lastdate) {
+            callback(lastday, true); //same day
+          } else {
+            callback(lastday + 1, false);
+          }
+        } else {
+          callback(1, false);
+          // console.log([
+          //   "[[ " +
+          //     "lastday: " +
+          //     "lastday " +
+          //     "]]" +
+          //     "- utility_function_getDayOfUser",
+          // ]);
+        }
         }
     )
     .catch(console.error)

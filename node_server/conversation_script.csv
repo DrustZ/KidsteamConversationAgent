@@ -1,7 +1,7 @@
 ﻿Day,StateID,Tag,Speech,Response-Transition,Recovery
 1,greeting,1_g,"Welcome to superhero self-talk skill training, for the next five day, you are going to have a wonderful adventure with our superhero Zip! Let’s join him to save the world;
 Today is our first day joining our superhero Zip. Let’s see how he will lead us to a new adventure!",na-0,recovery
-1,0,1_0,"If you are ready, say I am ready to start day one and press the button.",dayone-1,recovery
+1,0,1_0,"If you are ready, say I am ready to start day one and press the button.",na-1,recovery
 1,1,1_1,"Great, let's join our superhero Zip now. 
 And, first, I would love to get to know you a bit more! Can you tell me your name?  Press the button when you finished. ",na-2,recovery
 1,2,1_2,"Hi, it’s nice to meet you! 
@@ -54,18 +54,18 @@ Think about this question, and I will ask you to share with me during tomorrow's
 2,greeting,2_g,Thanks for coming back!  Today is day two with our superhero Zip. Let’s  see how he will lead us to a new adventure!,na-0,recovery
 2,0,2_0,"If you are ready, say I am ready to start day two and press the button.",na-1,recovery
 2,1,2_1,"Great, welcome back to Superhero Skill! Yesterday, we learned about self-talk and why positive self-talk is so important. Before we begin today’s story, let’s see what you remember! 
-[Q Sound Effect] “What were the four letters that Zip taught Lily, and what do they stand for?” Press the button after you have finished sharing to continue. ",na-2; no-2_1_1 ,recovery
+[Q Sound Effect] “What were the four letters that Zip taught Lily, and what do they stand for?” Press the button after you have finished sharing to continue. ",na-2,recovery
 2,2_1_1,2_1_1_testing(audio),This is day two testing file. Press the button when you have done speaking. ,na-2,recovery
 2,2,2_2,"Great! H-T-F-D for happens, think, feel, do. No matter what happens to you, you can use self-talk to decide what you think about the situation, which will affect how you feel and what you decide to do.
 Today, we are going to hear a story about a young Wizard named Lucy. Let’s follow along as she learns to make new potions and see how Zip helps her, too!
 [Q effect sound] Before we start our new journey with Lucy, can you tell me about a time when you asked for help?” Press the button after you have finished sharing to continue. 
 
 ",na-3,recovery
-,3,2_3,"“Thanks for sharing! Now, let’s move on to hear how superhero helped the Wizard Acanemy student Lucy”
+2,3,2_3,"“Thanks for sharing! Now, let’s move on to hear how superhero helped the Wizard Acanemy student Lucy”
 
 “Every year at the Wizarding Prepatory Academy, there was a potion-making exam that the junior Wizards must take to be able to move onto the next level of potion master training. Every junior Wizard must be able to create a potion that turns a frog into a bouquet of beautiful flowers. But Lucy, a junior Wizard at the academy, was struggling to master potion-making. She had been practicing for weeks; she had read every potion book she could find and followed the directions perfectly. But every time she combined the ingredients in her cauldron, cast the spell from her spellbook, and tested the potion on a frog, she turned the frog into something horrible like a stinky fish, a fat worm, or ugly rat! ”
 
-[Q effect sound] [Stroryline Q] If you were Lucy, what would you do to try and master your potion skills? Discuss with each other. Press the button after you have finished discussion to continue the story. ",na-4,
+[Q effect sound] [Stroryline Q] If you were Lucy, what would you do to try and master your potion skills? Discuss with each other. Press the button after you have finished discussion to continue the story. ",na-4,recovery
 2,4,2_4,"“Good thinking. Let’s see if that’s what Lucy does!” 
 “A few days before the exam, Lucy was practicing her potion skills. After hours of practice with no success, she concentrated as hard as she could, carefully measured her ingredients, and turned the frog into… a bar of ice cream! She felt tears of frustration welling up in her eyes. She told herself, ‘This is hopeless, I just have to accept that I am terrible at making potions. I will never get this right and should just give up!’ Just as she was about to go back to her dormitory and cry, she heard a loud “Whoosh” and suddenly, a mini superhero Zip was standing on her right shoulder!”
 
@@ -104,7 +104,7 @@ We have finished today’s story. I have some questions for you to reflect and d
 2,finish,2_f,Thanks for attending today’s story and learning self-talk skill. Come back tomorrow to learn more about what happened to our Superhero Zip!  You can close the window now. See you tomorrow!,na-finish,recovery
 ,,,,,
 3,greeting,3_g,Thanks for coming back!  Today is day three with our superhero Zip. Let’s see how he will lead us to a new adventure!,na-0,recovery
-3,0,3_0,"If you are ready, say I am ready to start day three and press the button.",dayone-1,recovery
+3,0,3_0,"If you are ready, say I am ready to start day three and press the button.",na-1,recovery
 3,1,3_1,"Great! Welcome back to our superhero self-talk story. Welcome back! I hope you’re ready for another story! As you may remember, yesterday,our great superhero Zip encouraged Lucy, a young wizard, to use self-talk when she was struggling to master a challenging potion-making task and about to give up. ask for help when she had trouble with making a potion. Even though Lucy felt embarrassed to ask for help at first, she learned that everyone asks for help at some point and it is a great way to learn.
 
 Can one of you share your answer to the take-home question from yesterday? The question was [Q Sound Effect] “What are some reasons why people should not be afraid to ask for help?",na-2,recovery
@@ -148,4 +148,109 @@ Finally,  they worked out their argument. Nina agreed to lend her quill to Noah.
 Before we end, I want to ask you one more thing: What are some things you can do to handle your emotions when you feel angry and frustrated? Think about this question, and I will ask you to share with me during tomorrow's story time.
 
 Thanks for listening to today’s story and learning a new skill – managing strong emotions. Remember to come back tomorrow to learn more about what happened to our Superhero Zip! See you tomorrow! ",na-finish,
-3,finish,3_f,Thanks for attending today’s story and learning self-talk skill. Come back tomorrow to learn more about what happened to our Superhero Zip! See you tomorrow! ,na-finish,recovery
+3,finish,3_f,Thanks for attending today’s story and learning self-talk skill. Come back tomorrow to learn more about what happened to our Superhero Zip!  You can close the window now. See you tomorrow!,na-finish,recovery
+4,greeting,4_g,Thanks for coming back!  Today is day four with our superhero Zip. Let’s see how he will lead us to a new adventure!,na-0,recovery
+4,0,4_0,"If you are ready, say I am ready to start day three and press the button.",na-1,recovery
+4,1,4_1,"Welcome back! Last time, we heard about how Zip helped two siblings who were so angry they turned into goblins. Before we begin today’s story, let’s see what you remember!
+
+[Question effect sound] Last time I asked, “What is something you want to tell yourself the next time you’re feeling angry or frustrated?” Can you tell me about that? After you have finished sharing, press the button to continue.",na-2,recovery
+4,2,4_2,"Great, thanks for sharing. Remember, you can always use H-T-F-D, happen, think, feel and do to help you feel ready to cope with any emotion. It’s not always easy to feel strong feelings, so remember to take three breaths and use self-talk to change how you think about what happens to you, which changes how you feel about it. 
+Today we are going to continue the story of our superhero Zip and see if he can help Juno, the youngest sibling in the Umbra family to overcome her self-doubt using supportive self-talk.
+
+Before we start our new journey, I have a question for you. [Question effect sound] Have you ever felt a lack of confidence?  After you have finished sharing, press the button to continue. ",na-3,recovery
+4,3,4_3,"Thanks for sharing with me. We all sometimes feel a lack of confidenceespecially when we start learning a new skill, need to perform well or pass a exam, or face new changes. Today we are going to see how Zip helps Juno confront her self-doubt using supportive self-talk.  
+Juno came from a family of famous swordsmiths, the legendary Umbra family. She wanted to learn the family craft of making majestic swords, so that she could carry on the family legacy. Their swords were used in epic battles against dragons and supervillains. However, sword making did not come easily to her. Juno had a lot of trouble creating strong swords. The ones she made were either too small, too weak, or not comfortable to use in battle. 
+One day when Juno was working, our supervillain Hex noticed her inside the workshop and saw the weak sword she was working on. He said “Hey, aren’t you the youngest member of the Umbra family?” She looked up in surprise; she didn’t even know anyone had been watching her. Before Juno could answer, Hex continued: “So the rumors are true! You really are terrible at making swords; you’re even worse than I imagined! You’ll never live up to your family name.” Hex’s words hit Juno like an arrow to her heart. She looked straight down at the sword she was working on, scrubbing it furiously with a steel wool polishing cloth, hoping Hex wouldn’t see that her lip was trembling. She thought about her older sister Alvina and her older brothers Eris and Clem and the powerful, elegant swords–with impossibly thin blades and jewel-encrusted hilts–that they turned out day after day. She had never made anything like that, and a lump rose in her throat thinking about Hex’s words. “He’s right, she told herself. I’ll never be able to do that.”Hex grinned to himself watching Juno on the verge of tears. He didn’t know what she was thinking, but he felt sure negative self-talk was setting in. He laughed evily and flew away.
+
+Fortunately, Zip had been tracking Hex, knowing he was up to no good. When saw Hex fly off, he knew trouble had to be brewing nearby. After searching carefully in every nook and cranny, Zip finally spotted a sniffling Juno.
+
+“Hey there,” Zip said gently, “I just saw an acquaintance of mine named Hex fly out of here. I hate to say it, but he has a bad habit of getting kids to use negative self-talk. You didn’t notice him doing that here, did you?”
+
+“Negative self-talk?” Juno replied. “What’s that?” 
+
+“Ah,” said Zip, “Negative self-talk is a very sneaky trickster. It is all the things we tell ourselves that make us feel hopeless and sad. It can creep into our minds when we least expect it and ruin good moments and make bad moments harder. Is there any chance you’ve been talking to yourself negatively?”
+
+Juno let out a sob of frustration as the dam inside her broke and all her thoughts came tumbling out. “I’ve been telling myself that everyone in my family but me can make beautiful swords, and I’m going to be an embarrassment to my whole family. I’ve been telling myself that I am awful at this and it’s only a matter of time before everyone else finds out! But that’s not negative self-talk” she went on, “that’s just the truth!”
+
+Zip smiled sympathetically. “I know just how you feel, and I know you have a big challenge ahead of you to master your family craft. But what happens next depends on you and what you decide to do. What you tell yourself will affect how you think, how you feel, what you do–and even what those swords look like. So tell me this, what does it take to become a masterful swordmaker?”
+
+“I dunno,” Juno said sullenly. “Years of practice and hard work. Good teachers. Careful stone-setting techniques. The finest tools. Steady fingers and a sharp eye. All things I don’t have!”
+
+“That’s a great list!” said Zip. “And you may be right–perhaps you haven’t had the years of practice and hard work that it takes to develop those steady fingers and sharp eyes. But I’m proud of you for being right here in this workshop where that practice and hard work can begin. I know you have the motivation to build this skill, but I think you need some positive self-talk, too. So, instead of telling yourself, ‘I am awful at this and it’s only a matter of time before everyone else finds out,’ I want you to say, ‘I am awful at this and it’s only a matter of time before I get better. I have faith that if I practice, work hard, and watch what the experts do, I will become an expert myself.”
+
+
+[Learning question] Sometimes we all struggle with something we haven’t learned to do well yet. Have you ever felt like a beginner who didn’t know what to do? How do you think someone should talk to themselves in that situation? After you have finished sharing, press the button to continue.",na-4,recovery
+4,4,4_4,"Thanks for sharing with me and perhaps with your sibling, too.
+Although Juno gradually started to feel better, the story doesn’t end there. When supervillain Hex discovered that his plans had been foiled, he became enraged. “This is the last time Zip will talk to one of these sniveling children,” Hex swore to himself. “I know the mountain where he sleeps, and when he wakes tomorrow, he’s going to be in for quite a surprise.”
+Tomorrow in our final chapter, we’ll find out if Hex is successful in his plot of revenge. But today, I have a few last questions for you. 
+[Q Effect Sound]  Think about the things that you are struggling with. Can one of you share one thing you want to tell yourself when you’re thinking about this challenge?  After you have finished sharing, press the button to continue.
+",na-5,recovery
+4,5,4_5,"Thanks for sharing. Remember we all face challenges in our lives. But how we talk to ourselves will influence our attitudes toward the challenges. If when we have challenges we remember to use supportive self-talk, even if the challenges are still there, we will have courage and confidence to face them. You can tell yourself, “All I need to do is try my best. If it doesn’t work, I’ll still be proud of myself for trying, and I’ll have a chance to try again in the future”. That will carry you through difficulties and challenges. 
+Before we end our day’s story. I want to leave you a take home question: 
+How do you think being persistent and confident can affect your life?
+
+Think about this question, and I will ask one of you to share with me during tomorrow's story time.
+“Thanks for listening to today’s story about learning persistence and confidence. Come back tomorrow when Hex and Zip will face each other at last in our final episode.  You can close the window now. See you tomorrow!",na-finish,recovery
+4,finish,4_f,Thanks for attending today’s story and learning self-talk skill. Come back tomorrow to learn more about what happened to our Superhero Zip! See you tomorrow! ,na-finish,recovery
+5,greeting,5_g,Thanks for coming back!  Today is day five with our superhero Zip. Let’s see how he will lead us to a new adventure!,na-0,recovery
+5,0,5_0,"If you are ready, say I am ready to start day five and press the button.",na-1,recovery
+5,1,5_1,"Welcome back to our superhero vs. supervillain story. I hope you’re excited to hear our final installment today–what will happen with Zip and Hex face each other at last? Before we find out, let’s revisit our question from yesterday.
+Yesterday I asked, [Question Effect Sound] “How do you think being persistent and confident can affect your life?” Can you tell me what you think? After you have finished sharing, press the button to continue. ",na-2,recovery
+5,2,5_2,"Thanks for sharing; those are great insights. And now without further do, let’s see how things end for our superhero Zip.
+When Hex arrived on the mountaintop, he found himself enveloped by a cold, dense fog. “Zip sleeps here??” he thought to himself, “how strange.”
+
+The fog blocked his view in every direction, yet Hex instinctively crouched low to avoid being seen. He crept forward slowly with his arms outstretched, hoping to feel his way through the blinding fog. He clambered up and around giant boulders and inched his way past steep crags. At last, his hands felt what he had been hoping to find: the entrance to Zip’s cave.
+
+Meanwhile, Zip slept peacefully in his secret cave, dreaming of Juno and Lily, Nina and Monica, Noah and Lucy, and all the other children he had watched become kinder and stronger that week. As he breathed gently in and out, he suddenly sat bolt upright–something was amiss! He felt the hairs on the back of his neck stand up and every nerve in his body was alert. What was wrong? Was someone there? He glanced from side to side, shaking sleep from his eyes, but all he could see in every direction was a thick, cold fog. 
+
+He heard nothing, saw nothing. Perhaps he had been mistaken. Zip sighed and started to lay down again. “I must be miscalibrated,” he said to himself. “Too many adventures and too much excitement lately.” 
+
+But before he could pull the blankets back over him, Hex burst into view. “I’VE GOT YOU NOW!” he shouted. “GIVE UP, ZIP; YOU’RE OUT OF OPTIONS!”
+
+Zip instantly snapped into action, leaping from his bed to full engagement in a fraction of a second, hovering above the ground with his fists up. “I should have known it was you,” he said. “But you can’t catch me off guard that easily.”
+
+“OH CAN’T I?” Hex retorted, whipping out a can of smelly spray and frantically spraying Zip who began hacking and coughing and waving his arms. “Ugh, Hex! What is that?? It’s horrid!”
+
+“HAHA!” said Hex. “I know it is! It’s my seriously stupendous smelltacular stink spray, and now it’s all over YOU! Now NO children will want to be anywhere near you!”
+
+
+[Question Effect Sound]: Now Zip is covered in Hex’s putrid potion. What do you think he’ll do to get himself out of this mess?
+After you have shared your answer, press the button to continue. ",na-3,recovery
+5,3,5_3,"Great guess, let’s see if Zip thinks of that. 
+
+“Hex,” Zip sighed, “why don’t you want me to teach children about supportive self-talk? And why do you teach them to tell themselves hurtful things?”
+
+Hex pulled out his smelly spray angrily and looked like he was about to deploy it again. But just as he was about to press the nozzle, he let his arm fall down to his side in defeat. To Zip’s surprise, he saw Hex’s eyes filling with tears. 
+
+“EVERYONE THINKS YOU’RE BETTER THAN ME!” Hex spluttered. “You’ve always been the better superhero: faster, stronger, better at self-talk. No one will ever want to be around me if they notice they could have you as their superhero instead. So if they don’t want me, I don’t want them to have any super hero at all! They can just be stuck being sad about their problems just like I’m stuck being sad about mine!
+
+[Question Effect Sound] What do you think Zip and Hex are each feeling right now? After you have finished sharing, press the button to continue. ",na-4,recovery
+5,4,5_4,"Thanks for sharing, let’s see if that’s what Hex and Zip say, too. 
+
+“Hex,” said Zip quietly, “you have so many amazing talents. You’re probably the stealthiest super hero I know. Just this morning, you crept up on my so quietly that I had convinced myself no one was here and was about to go back to bed. This smelly spray is–unfortunately–the most potent brew I’ve ever encountered. Any kid would be lucky to have you as their super hero, if you just cared about helping them.
+
+Hex sniffed and looked up at Zip. “You think I’m stealthy?” he said quietly.
+
+“Totally!” replied Zip. “There are so many things I could learn from you. I wish my super hero family could see your moves.”
+
+Hex kicked at a loose rock on the ground and looked down at his feet. “Your family wouldn’t care about my abilities,” he mumbled. “They’re all amazing super heroes already; what would they see in me? You’re so lucky you even have a family; I have no one.”
+
+“Hex!” Zip said in exasperation. “I think you’ve spent so much time teaching kids negative self-talk that now it’s all you know! Are you kidding me? My family loves meeting and learning about new superheroes. If you can just change your attitude and decide that you want to support other people and yourself, I think they’d love to get to know you. They live in a small house on the other side of the mountain, with flowers, horses, cows, and other cute animals. Why don’t we take a trip together and stay with them for a while? But–you’ll have to stop spraying people with smelly spray!”
+
+Hex wiped the tears from his eyes. “Thanks, Zip” he said quietly. “I’m so embarrassed that I came up here to spray you. I’d love to meet your family, but honestly, I don’t see how I can face them after what I’ve done.”
+
+Zip smiled. “I know how you feel. But I think you can do it. Let’s try the same positive self-talk that helps kids. How about telling yourself something like, ‘It’s never too late to change the way I treat people. If I show others that I care about them, there’s a good chance they’ll care about me, too.’”
+
+[Question Effect Sound]  What are the four letters that Zip can teach Hex to help him get better at self-talk? After you have finished sharing, press the button to continue.",na-5,recovery
+5,5,5_5,"Thanks for your guess. Hex can use H for “happens,” T for “thoughts,” F for “feelings,” and D for “do” to help guide him through self-talk.
+
+Positive self-talk didn’t come easily for Hex at first–he was out of practice. But with time, practice, and encouragement from Zip, he eventually became a master. Today he lives on Zip’s family farm, where he grows herbs and wildflowers that he uses to make magical potions. And every afternoon, Hex and Zip search as a team for kids who might need a little encouragement to practice self-talk, too.
+
+But the best part of all, is that you don’t need to wait for Zip and Hex to visit. Every kid has a superhero inside them that can help you be your best self in good times and in bad. So don’t forget to call on your superhero self every day; they are right there inside you just waiting to help you thrive. 
+
+Thanks for listening the superhero self-talk story for the past 5 days. Hope you enjoy the interaction. This is the end of our journey with superhero Zip. You can close the window now.",na-finish,recovery
+5,finish,5_f,Thanks for attending today’s story and learning self-talk skill. You can close the window now.,na-finish,
+9,greeting,0_g,"Welcome to superhero self-talk skill training, for the next five day, you are going to have a wonderful adventure with our superhero Zip! Let’s join him to save the world.",na-0,recovery
+9,0,0_0,"If you are ready, say I am ready to start day one and press the button.",na-1,recovery
+9,1,0_1,"Great, how are you doing today? After you have finished sharing, press the button to continue. ",na-2,recovery
+9,2,0_2,Thanks for your sharing and using the demo. You can close the window now. ,na-finish,recovery
