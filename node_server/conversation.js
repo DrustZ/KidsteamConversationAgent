@@ -64,7 +64,7 @@ module.exports = {
             .toLowerCase();
           let cur_script = script_states[this.day][this.status];
           let res_trans = splitNTrim(cur_script["Response-Transition"], ";");
-          console.log("res-transition is: ", res_trans);
+          // console.log("res-transition is: ", res_trans);
           let transitions = [];
 
           let na_response = false;
@@ -94,7 +94,7 @@ module.exports = {
             let index_matches = [];
             // we try to find the first index if the response matches in the userinput
             // then compare to extract the first matched response
-            console.log("not na response, transitions is: ", transitions);
+            // console.log("not na response, transitions is: ", transitions);
             console.log("user input: ", userinput);
             for (let trans of transitions) {
               // trans: [reponses, transition]
